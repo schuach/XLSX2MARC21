@@ -1,0 +1,333 @@
+#+TITLE: Wir haben das in Excel -- wie bekommen wir das in den Katalog?
+#+AUTHOR: Stefan Schuh
+#+DESCRIPTION: Vortrag für den österreichischen Bibliothekartag 2019
+#+KEYWORDS:
+#+CREATED: [2019-09-09 Mo]
+#+STARTUP:  overview
+#+OPTIONS: num:nil
+#+OPTIONS: date:nil
+#+OPTIONS: toc:nil
+#+OPTIONS: reveal_title_slide:nil
+#+OPTIONS: reveal_single_file:t
+#+OPTIONS: ^:nil
+#+REVEAL_HLEVEL: 1
+#+REVEAL_THEME: league
+#+EXPORT_FILE_NAME: vortrag_bibtag2019_no_local_links.html
+
+
+* "Wir haben das in Excel ..."
+*** "... wie bekommen wir das in den Katalog?"
+    *Stefan Schuh*
+
+    Universitätsbibliothek Graz
+
+    Österreichischer Bibliothekartag
+
+    Graz, 11. September 2019
+
+* Projekte
+  - Handschriftenkatalog der UB Graz
+  - Korrespondenzen aus der Nachlasssammlung
+
+* Werkzeuge
+   - Python
+   - OpenRefine
+   - Emacs
+
+* Handschriften
+  - Nachweis der Historischen Handschriften im Bibiothekssystem
+  - Metadaten für das Portal der [[http://unipub.uni-graz.at/obvugrseck][Digitalisierten Handschriften]]
+*** Ausgangsdaten
+    #+ATTR_REVEAL: :frag (appear)
+    - [[http://sosa2.uni-graz.at/sosa/katalog/][Handschriftenkatalog der UBG]]
+    - Übertragung in MS-Excel
+    # - [[file:vortrag_bibtag2019/excel_src.xlsx][Übertragung in MS-Excel]]
+*** Ausgangsdaten in MS-Excel (Auszug)
+    [[file:vortrag_bibtag2019/excel_src.png]]
+*** Aufbereitung der Daten
+    #+ATTR_REVEAL: :frag (appear)
+    - Konversion von xlsx nach CSV
+    - Vereinheitlichung der Spaltenköpfe
+    - Whitespace cleanup, etc.
+    - Recherche von Ansetzungsform und GND-Nummer von vorbesitzenden
+      Institutionen und Personen
+    - Iterativer Prozess in Zusammenarbeit mit den Erschließerinnen
+    # - Vereinheitlichung der [[file:vortrag_bibtag2019/headlines.xlsx][Spaltenköpfe]]
+*** Erstellung von MARC-Daten
+    #+ATTR_REVEAL: :frag (appear)
+    - Einlesen der Daten im csv-Format in eine geeignete Datenstruktur
+      - Daten können über Spaltenköpfe adressiert werden:
+        #+begin_src python
+        beschreibstoff = row["Beschreibstoff"]
+        #+end_src
+
+    - Erstellen eines MARC-Records pro Zeile (falls Daten ausreichend)
+      
+***** Einfach: unverändertes Übertragen von Werten
+      - z. B. Beschreibstoff
+    #+BEGIN_SRC python
+      beschreibstoff = row["Beschreibstoff"]
+      rec.add_ordered_field(
+          Field(
+              tag = "340",
+              indicators = [" ", " "],
+              subfields = ["a", beschreibstoff])
+    #+END_SRC
+
+***** Schwieriger: Zusammensetzen mehrerer Werte
+      - z. B. Umfangs- und Formatangabe
+      #+BEGIN_SRC python
+        # Umfangsangabe in 300
+        if "rolle" in row["Umfang"].lower():
+            sfa = row["Umfang"]
+        else:
+            sfa = f'{row["Umfang"]} Blätter'
+
+        sfc = f'{row["Format"]}, {row["Größe h : b   "].replace(":", "x")}'
+
+        if sfa.startswith(" "):
+            sfa = ""
+        if sfc.startswith(", "):
+            sfc = sfc[2:]
+        if sfc.endswith(", "):
+            sfc = sfc[:-2]
+        rec.add_ordered_field(
+            Field(
+                tag = '300',
+                indicators = [' ', ' '],
+                subfields = ["a", sfa, "c", sfc]))
+      #+END_SRC
+
+***** Aufwändig: Datumsangaben
+      - verteilen sich auf mehrere Spalten
+      - liegen nicht in Maschinenlesbarer Form vor
+      - maschinenlesbare Form für Feld 008/07-10 notwendig
+      - menschenlesbare Form kann direkt in 264 geschrieben werden
+
+***** Datum 1: Aus der Tabelle auslesen
+      - Es wird nur auf das erste Datum geprüft
+      - Prüfung nach absteigender Genauigkeit
+      - Erster gefundener Wert wird verwendet
+      
+      #+BEGIN_SRC python
+        def get_date(row):
+            """Return the raw date for 264 $$c and 008"""
+            data = None
+
+            if row["1. Dat. exakt"]:
+                data = row["1. Dat. exakt"]
+            elif row["1. Dat. Ex. Von - bis"]:
+                data = row["1. Dat. Ex. Von - bis"]
+            elif row['1. Dat. ca., um, vor, Anfang, Ende']:
+                data = row['1. Dat. ca., um, vor, Anfang, Ende']
+            elif row["1. Dat. Jh. "]:
+                data = row["1. Dat. Jh. "]
+            else:
+                data = "Datum unbekannt"
+
+            return data
+      #+END_SRC
+
+***** Datum 2: Mapping der Jahrhundertangaben
+      - Mapping für Jahrhundertangaben notwendig, weil MARC ein vierstellig
+        numerisches Datum erzwingt
+       
+     #+BEGIN_SRC python
+          map_dates_008 = {
+              "VI": "501",
+              "IX/1": "801",
+              "Mitte IX": "851",
+              "Ende IX": "881",
+              "Anfang X": "901",
+              #---8<---8<---8<---
+              }
+     #+END_SRC
+
+***** Datum 3: Zuordnung des Datums anhand des Mappings
+        #+BEGIN_SRC python
+               def date_008(date):
+                   year = None
+                   if date in map_dates_008.keys():
+                       year = map_dates_008[date].zfill(4)
+                   else:
+                       re_match = re.search(r'\d{3}\d?', date)
+                       if re_match is not None:
+                           year = re_match.group(0).strip().zfill(4)
+                   return year
+        #+END_SRC
+
+
+*** Einspielung ins Bibliothekssystem
+    #+ATTR_REVEAL: :frag (appear)
+    - Importprofil
+    - Bestand
+    - Weitere Bearbeitung erfolgt intellektuell
+
+* Korrespondenzen aus der Nachlasssammlung
+*** Ausgangsdaten
+    - [[http://sosa2.uni-graz.at/sosa/nachlass/person/meinong/][Alexius Meinong im alten Nachlassportal]]
+    
+*** Ursprünglich geplanter Workflow
+    #+ATTR_REVEAL: :frag (appear)
+    - Daten aus dem Text der HTML-Site extrahieren
+    - In strukturierter Form (csv/Excel) zur Verfügung stellen
+    - Daten intellektuell in Excel ergänzen und mit OpenRefine anreichern
+    - Aus dem daraus resultierendem Excel MARC-Daten erstellen und in Alma laden
+***** DONE: Daten aus dem Text der HTML-Site extrahieren
+      Text: 
+      #+BEGIN_EXAMPLE
+      A
+      
+      Adamek, 0. 1-8; Adickes, E. 9-10; Adler, Guido (Briefe aus den Jahren
+      1877-1920) 11-164 (Meinong an Adler: siehe LXVII); Akademie der
+      Wissenschaften in Wien: siehe XX/e (vgl. auch: Junk, Karabacek,
+      Radermacher, Redlich) (Meinong an die Akademie: siehe LXVII); Alexander,
+      S. 165; Ameseder, Rudolf 166-185; Appunn, A. 186-187; Arleth, Emil
+      188-191; "Arminia" (Burschenschaft) 192; Artaria, J. 193; Aster, E. von
+      194; Augustin, M. 195-197; Avenarius, Richard 198-213 (Meinong an
+      Avenarius: siehe LXVII)
+      #+END_EXAMPLE
+***** DONE: Daten aus dem Text der HTML-Site extrahieren
+      Die einzelnen Einträge einlesen
+      #+begin_src python
+        with open("meinong_brief.txt") as fh:
+            entries = []
+            for line in fh:
+                if re.match(r"(^[A-Z]$)|(^$)", line):
+                    continue
+                else:
+                    entries += [entry for entry in line.split(";")]
+      #+end_src
+      "Datenfelder" innerhalb der Einträge trennen
+      #+begin_src python
+      re.search(r'^([a-zA-ZäüöÄÜÖéá., "ß]*)(\(.*\))?([\d ,-]+)(\(.*\))?', entry)
+      #+end_src
+***** DONE: In strukturierter Form (csv/Excel) zur Verfügung stellen
+      # [[file:vortrag_bibtag2019/meinong_output.csv]]
+      [[file:vortrag_bibtag2019/meinong_output.png]]
+***** CANCELED: Daten intellektuell in Excel ergänzen und mit OpenRefine anreichern
+      ...
+***** CANCELED: Aus Excel MARC-Daten erstellen und in Alma laden
+      ...
+*** Nachlassdatenbank
+    - Korrespondenzen wurden in Datenbank erfasst
+    - Datenbank nicht mehr benutzbar
+    - Excel-Export der Datenbank verfügbar
+    # - [[file:vortrag_bibtag2019/Nachlass-Sammlung.xls][Excel-Export]] der Datenbank verfügbar
+
+*** Bisherige Aktivitäten
+    - Auflösung der Namen aus den Schlüsseln
+    - Erstellung einer Datei pro Nachlass
+
+*** In Arbeit
+    - Anreicherung von Personen und Orten mit der GND-ID
+    - Erstellung von MARC-Daten
+      - Ein Datensatz pro Konvolut, d. h. pro Absender
+      - Konformität mit [[https://d-nb.info/1186104252/34][RNAB]]
+
+
+* Werkzeuge
+
+*** Python
+***** Warum Python?
+      - Open Source
+      - Verfügbarkeit von Materialien zum Selbststudium
+      - Sehr umfangreiche Standard Library
+      - Drittpakete für jeden erdenklichen Anwendungsfall über =PyPI= und =pip=
+      - extrem praktische Methoden zur Textmanipulation
+***** Standard-Library
+      - csv
+      - re
+***** pymarc
+      - https://github.com/edsu/pymarc
+      - Objektorientiertes Interface zur Manipulation von MARC-Daten
+        #+begin_src python
+        >>> title = record["245"]["a"]
+        >>> print(title)
+        "Automate the boring stuff with Python"
+        #+end_src
+
+***** pymarc_helpers
+      https://github.com/schuach/pymarc_helpers
+
+      Bequemlichkeitsfunktionen für pymarc, v. A. für die Aufbereitung von
+      Verlagsmetadaten
+
+      - lesen/ausgeben von MARC-Batch-Dateien in verschiedenen Formaten
+      - einfache Feldstatistik
+      - oft benötigte Operationen
+        - Entfernen von ISBD-Interpunktion
+        - Einfügen von Nichtsortierzeichen
+        - relator terms in Codes umwandeln
+        - etc.
+***** pymarc_helpers: Beispiel
+      MARC-Batch in MARC-XML schreiben:
+      #+begin_src python
+        filename = "output.xml"
+        writer = pymarc.XMLWriter(open(filename, "wb"))
+        for record in reclist:
+            writer.write(record)
+            writer.close()
+      #+end_src
+
+      Mit =pymarc_helpers=
+      #+begin_src python
+        pymarc_helpers.write_to_file(reclist, "output", form="xml")
+      #+end_src
+
+      
+
+*** OpenRefine
+    http://openrefine.org/
+    
+    Freie, sehr mächtige Software Datenaggregation und Datenaufbereitung
+    
+    #+ATTR_REVEAL: :frag (appear)
+    - Ursprünglich von Google als "GoogleRefine" entwickelt und später als Open
+      Source veröffentlicht
+    - Wird zur Anreichern der Daten mit GND-IDs verwendet
+
+*** Emacs + org-mode
+    https://www.gnu.org/software/emacs/
+    [[http://orgmode.org]]
+    
+    #+ATTR_REVEAL: :frag (appear)
+    - Verfassen von Code und Dokumentation in einer Datei (mit [[https://orgmode.org/worg/org-contrib/babel/][org-babel]])
+    - Export des Scripts
+    - Export der Dokumentation
+***** In Emacs
+    #+begin_src org
+      ,***** DONE Beschreibstoff
+            CLOSED: [2018-11-29 Do 17:05]
+            :LOGBOOK:
+            - State "DONE"       from "TODO"    [2018-11-29 Do 17:05]
+            :END:
+            Für Books gibt es in 007 keinen Code für physical medium,
+            daher wird der Text unverändert übernommen. Umso besser,
+            dann muss nichts geprüft werden.
+            ,#+NAME: beschreibstoff
+            ,#+BEGIN_SRC python
+              beschreibstoff = row["Beschreibstoff"]
+              rec.add_ordered_field(
+                  Field(
+                      tag = "340",
+                      indicators = [" ", " "],
+                      subfields = ["a", beschreibstoff])
+              )
+            ,#+END_SRC
+
+    #+end_src
+***** In der exportierten Dokumentation
+      [[file:vortrag_bibtag2019/screenshot_doku.png]]
+* Lessons learned
+  #+ATTR_REVEAL: :frag (appear)
+  - Genauere Datenkonsistenzprüfungen im Vorfeld
+  - Sich umhören, was schon getan wurde und ob es vielleicht noch Daten in
+    irgendwelchen "Schubladen" gibt
+* Danke für Ihre Aufmerksamkeit! Fragen?
+  *Stefan Schuh*
+
+  Universitätsbibliothek Graz
+
+  [[mailto:stefan.schuh@uni-graz.at]]
+  https://github.com/schuach

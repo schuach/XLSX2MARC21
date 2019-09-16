@@ -1,0 +1,11 @@
+* XLSX2MARC21
+  Scripten, die von Excel-Dateien ausgehend MARC21-Daten erstellen.
+* Coming Soon
+  Wie bei meinem [[https://bibliothekartag2019.univie.ac.at/programm/v-traditionelle-aufgaben-neue-dienstleistungen/#c442979][Vortrag]] am
+  [[https://bibliothekartag2019.univie.ac.at/][Österreichischen Bibliothekartag 2019]] versprochen veröffentliche ich hier die
+  Daten und Skripten, aus und mit denen ich MARC21-Daten erstellt habe.
+
+  Damit die interssierte Öffentlichkeit aber auch etwas davon hat, werde ich das
+  ganze noch ein bisschen aufräumen und in den nächsten Wochen hier committen.
+  Falls Sie benachrichtigt werden wollen, wenn es dann soweit ist -- schreiben
+  Sie mir einfach!
