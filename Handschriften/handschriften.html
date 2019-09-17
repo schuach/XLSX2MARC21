@@ -1,0 +1,1454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-17 Di 17:01 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Erstellung von MARC21 für die Handschriften der UBG</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Stefan Schuh" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Erstellung von MARC21 für die Handschriften der UBG</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org384dc43">1. Vorbemerkungen</a>
+<ul>
+<li><a href="#org556861b">1.1. Dateien in diesem Ordner</a></li>
+</ul>
+</li>
+<li><a href="#org8b90472">2. Ausgangsdaten</a></li>
+<li><a href="#org170a30c">3. Jahrhundertangaben</a></li>
+<li><a href="#orgf9e471b">4. Verarbeitung</a>
+<ul>
+<li><a href="#org4a9f07e">4.1. Imports, globals</a></li>
+<li><a href="#orgafddef0">4.2. Das CSV importieren</a></li>
+<li><a href="#org3a97434">4.3. Funktion: create_record()</a>
+<ul>
+<li><a href="#orge489425">4.3.1. <span class="done DONE">DONE</span> 245</a></li>
+<li><a href="#org66867c3">4.3.2. <span class="done DONE">DONE</span> UBG als besitzende Institution eintragen</a></li>
+<li><a href="#orgc7a928a">4.3.3. <span class="done DONE">DONE</span> Leader</a></li>
+<li><a href="#org1dcfff6">4.3.4. <span class="done DONE">DONE</span> Beschreibstoff</a></li>
+<li><a href="#org8c516c3">4.3.5. <span class="done DONE">DONE</span> 008</a></li>
+<li><a href="#org989b2bc">4.3.6. <span class="done DONE">DONE</span> 500 mit Stand</a></li>
+<li><a href="#org35c4fa6">4.3.7. <span class="done DONE">DONE</span> Fußnote mit alter Signatur</a></li>
+<li><a href="#orgcda7bca">4.3.8. <span class="done DONE">DONE</span> Vorbesitzer eintragen</a></li>
+<li><a href="#org741e0c5">4.3.9. <span class="done DONE">DONE</span> 300</a></li>
+<li><a href="#org3431e09">4.3.10. <span class="done DONE">DONE</span> Jahreszahl</a></li>
+<li><a href="#orgedf2968">4.3.11. <span class="done DONE">DONE</span> Bestand</a></li>
+<li><a href="#orgcd41cf8">4.3.12. Die ganze Funktion</a></li>
+</ul>
+</li>
+<li><a href="#orga5c7a72">4.4. Zusammensetzen aller Teile</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org384dc43" class="outline-2">
+<h2 id="org384dc43"><span class="section-number-2">1</span> Vorbemerkungen</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Dieses Projekt wird in dieser Datei (<code>handschriften.org</code>) verwaltet. Alles
+außer den Ausgangsdaten wird aus dieser Datei mithilfe von <code>org-babel</code> und den
+literate programming-Funktionalitäten von Emacs bzw. <code>org-mode</code> exportiert. D.
+h. dass die resultierende Datei <code>handschriften_sosa.py</code> wahrscheinlich nicht
+sehr gut leserlich und sicher nicht PEP8-konform ist. Ich bitte dafür um
+Entschuldigung.
+</p>
+</div>
+
+<div id="outline-container-org556861b" class="outline-3">
+<h3 id="org556861b"><span class="section-number-3">1.1</span> Dateien in diesem Ordner</h3>
+<div class="outline-text-3" id="text-1-1">
+<pre class="example">
+.
+├── output
+│   ├── errors.txt                        [nicht verarbeitete Zeilen]
+│   └── handschriften.xml                 [das resultierende MARCXML]
+├── sourcefiles
+│   ├── 0-600.csv                         [Ausgangsdaten]
+│   ├── 1201-1800.csv                     [Ausgangsdaten]
+│   ├── 1801-Ende.csv                     [Ausgangsdaten]
+│   ├── 601-1200.csv                      [Ausgangsdaten]
+│   ├── Namensansetzung_Kern_Alma.csv     [Ansetzungsformen und GND-IDs Personen]
+│   └── vb_kor.csv                        [Ansetzungsformen und GND-IDs Körperschaften]
+├── handschriften.html                    [HTML-Export dieser Datei]
+├── handschriften.org                     [diese Datei]
+└── handschriften_sosa.py                 [das aus dieser Datei exportierte Python-Script]
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org8b90472" class="outline-2">
+<h2 id="org8b90472"><span class="section-number-2">2</span> Ausgangsdaten</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Die Daten sind in dieser Excel-Datei zu finden:
+</p>
+
+<p>
+<a href="MS-ALMA_Stand_final.xlsx">MS-ALMA_Stand_final.xlsx</a>
+</p>
+
+<p>
+Um es für die BearbeiterInnen übersichtlich zu halten, wurden eigene Sheets
+für jeweils 600 Signaturen angelegt. Jedes dieser Sheets wird als CSV
+gespeichert (einfach mit "speichern unter") um die Verarbeitung zu
+vereinfachen. Der Aufwand, xlsx mit Python einzulesen zahlt sich nicht aus.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org170a30c" class="outline-2">
+<h2 id="org170a30c"><span class="section-number-2">3</span> Jahrhundertangaben</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+<a href="Addendum zu römische Jahrhundert Angaben.docx">Addendum zu römische Jahrhundert Angaben.docx</a>
+</p>
+
+<p>
+Addendum zu römische Jahrhundert Angaben:
+</p>
+
+<p>
+Das Jahrhundert beginnt immer mit dem Jahr xxx1
+XII = 1101 – 1200
+XIII = 1201 – 1300
+für 008: XV = 1401
+</p>
+
+<p>
+Hälften:
+1.Hälfte 	XII/1 = 1101 – 1150
+XIII/1 = 1201 – 1150
+2.Hälfte	XII/2 = 1151 – 1200
+XIII/2 = 1251-1300
+für 008: XIII/2 = 1251
+</p>
+
+<p>
+Anfang: ersten zwei Dekaden
+Anfang XII = 1101 – 1120
+Anfang XIII = 1201 – 1220
+für 008: Anfang XII = 1101
+</p>
+
+<p>
+Ende: letzten zwei Dekaden
+Ende XII = 1181 – 1200
+Ende XII = 1281 – 1300
+Für 008: Ende XII = 1281
+</p>
+
+<p>
+Mitte: zwei Dekanden
+Mitte XII = 1141 – 1160
+Mitte XIII = 1141 - 1260
+Für 008: Mitte XII = 1151
+</p>
+
+<p>
+vor: minus eine Dekade
+vor 1254	1244 – 1254
+</p>
+
+<p>
+nach: plus eine Dekade
+nach 1254	1254 – 1256
+</p>
+
+<p>
+ca. plus fünf Jahre, minus fünf Jahre
+ca. 1254	1249 - 1259
+</p>
+
+<p>
+um wie ca.
+</p>
+</div>
+</div>
+<div id="outline-container-orgf9e471b" class="outline-2">
+<h2 id="orgf9e471b"><span class="section-number-2">4</span> Verarbeitung</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org4a9f07e" class="outline-3">
+<h3 id="org4a9f07e"><span class="section-number-3">4.1</span> Imports, globals</h3>
+<div class="outline-text-3" id="text-4-1">
+<div class="org-src-container">
+<pre class="src src-python" id="orgc371223"><span style="color: #4c83ff;">import</span> csv
+<span style="color: #4c83ff;">from</span> pymarc_helpers <span style="color: #4c83ff;">import</span> *
+<span style="color: #4c83ff;">from</span> pymarc <span style="color: #4c83ff;">import</span> Record, Field
+<span style="color: #4c83ff;">import</span> datetime
+<span style="color: #4c83ff;">import</span> re
+<span style="color: #4c83ff;">from</span> sys <span style="color: #4c83ff;">import</span> argv
+
+<span style="color: #ff69b4;">part1</span> = <span style="color: #61CE3C;">"sourcefiles/0-600.csv"</span>
+<span style="color: #ff69b4;">part2</span> = <span style="color: #61CE3C;">"sourcefiles/601-1200.csv"</span>
+<span style="color: #ff69b4;">part3</span> = <span style="color: #61CE3C;">"sourcefiles/1201-1800.csv"</span>
+<span style="color: #ff69b4;">part4</span> = <span style="color: #61CE3C;">"sourcefiles/1801-Ende.csv"</span>
+
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">output nur schreiben wenn write_out als kommandozeilenargument gegeben wird</span>
+<span style="color: #ff69b4;">write_output</span> = <span style="color: #96CBFE;">False</span>
+<span style="color: #4c83ff;">if</span> <span style="color: #4c83ff;">len</span><span style="color: #8b0000;">(</span>argv<span style="color: #8b0000;">)</span> &gt; <span style="color: #96CBFE;">1</span>:
+    <span style="color: #4c83ff;">if</span> argv<span style="color: #8b0000;">[</span><span style="color: #96CBFE;">1</span><span style="color: #8b0000;">]</span> == <span style="color: #61CE3C;">"write_out"</span>:
+        <span style="color: #ff69b4;">write_output</span> = <span style="color: #96CBFE;">True</span>
+</pre>
+</div>
+
+<p>
+Zur Erklärung:
+</p>
+
+<p>
+<code>part1</code>, <code>part2</code> etc. sind die Dateinamen der einzelnen Input-Files. Jede
+dieser Dateien entspricht einem Sheet in der ursprünglichen Excel-Datei. Ich
+habe sie deshalb nicht zu einem CSV zusammengesetzt, weil hier und da
+Datenkorrekturen an einzelnen Sheets gemacht wurden und ich nicht immer alle
+neu als CSV-abspeichern wollte.
+</p>
+
+<p>
+Die Prüfung auf <code>write_output</code> dient dazu, zu steuern, ob das Script eben
+das MARC-File schreibt oder nicht. Beim interaktiven herumspielen brauche
+ich das nicht jedes mal.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgafddef0" class="outline-3">
+<h3 id="orgafddef0"><span class="section-number-3">4.2</span> Das CSV importieren</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+Importiere das CSV und gebe eine Liste mit einem orderedDict pro Reihe aus.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python" id="orgf6da8e6"><span style="color: #4c83ff;">def</span> <span style="color: #ff1493;">csv_to_list</span><span style="color: #8b0000;">(</span>filename<span style="color: #8b0000;">)</span>:
+    <span style="color: #FBDE2D;">"""Read a csv file and return a list of dicts (one per line)"""</span>
+
+    <span style="color: #ff69b4;">rows</span> = <span style="color: #8b0000;">[]</span>
+    <span style="color: #4c83ff;">with</span> <span style="color: #4c83ff;">open</span><span style="color: #8b0000;">(</span>filename, newline=<span style="color: #61CE3C;">''</span><span style="color: #8b0000;">)</span> <span style="color: #4c83ff;">as</span> csvfile:
+        <span style="color: #ff69b4;">reader</span> = csv.DictReader<span style="color: #8b0000;">(</span>csvfile, delimiter=<span style="color: #61CE3C;">"\t"</span><span style="color: #8b0000;">)</span>
+        <span style="color: #4c83ff;">for</span> row <span style="color: #4c83ff;">in</span> reader:
+            <span style="color: #4c83ff;">if</span> <span style="color: #61CE3C;">"*"</span> <span style="color: #4c83ff;">in</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Signatur modern"</span><span style="color: #8b0000;">]</span>:
+                <span style="color: #4c83ff;">continue</span>
+            <span style="color: #4c83ff;">else</span>:
+                rows.append<span style="color: #8b0000;">(</span>row<span style="color: #8b0000;">)</span>
+
+    <span style="color: #4c83ff;">return</span> rows
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3a97434" class="outline-3">
+<h3 id="org3a97434"><span class="section-number-3">4.3</span> Funktion: create_record()</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+Die Hauptarbeit findet in der Funktion <code>create_record()</code> statt. Diese nimmt
+eine Zeile aus dem CSV (orderedDict) engegen und gibt ein
+pymarc.Record-Objekt zurück.
+</p>
+</div>
+
+<div id="outline-container-orge489425" class="outline-4">
+<h4 id="orge489425"><span class="section-number-4">4.3.1</span> <span class="done DONE">DONE</span> 245</h4>
+<div class="outline-text-4" id="text-4-3-1">
+<p>
+UBG Ms {signatur modern}
+</p>
+
+<p>
+Wenn "Bd." nicht "":
+UBG Ms {signatur modern}/{Bd.}
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python" id="org288d8cc"><span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">generiere Inhalt f&#252;r 245</span>
+<span style="color: #4c83ff;">if</span> <span style="color: #4c83ff;">not</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">'Signatur modern'</span><span style="color: #8b0000;">]</span>:
+    <span style="color: #4c83ff;">return</span> <span style="color: #61CE3C;">"Keine Signatur vorhanden"</span>
+<span style="color: #4c83ff;">else</span>:
+    <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Bd."</span><span style="color: #8b0000;">]</span>:
+        <span style="color: #ff69b4;">val245</span> = f<span style="color: #61CE3C;">"UBG Ms {row['Signatur modern'].strip()}/{row['Bd.'].strip()}"</span>
+    <span style="color: #4c83ff;">else</span>:
+        <span style="color: #ff69b4;">val245</span> = f<span style="color: #61CE3C;">"UBG Ms {row['Signatur modern'].strip()}"</span>
+
+    rec.add_ordered_field<span style="color: #8b0000;">(</span>
+        Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">'245'</span>,
+            indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">'0'</span>, <span style="color: #61CE3C;">'0'</span><span style="color: #ff1493;">]</span>,
+            subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">'a'</span>, val245<span style="color: #ff1493;">]</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org66867c3" class="outline-4">
+<h4 id="org66867c3"><span class="section-number-4">4.3.2</span> <span class="done DONE">DONE</span> UBG als besitzende Institution eintragen</h4>
+<div class="outline-text-4" id="text-4-3-2">
+<dl class="org-dl">
+<dt>own</dt><dd>gegenwärtige EingentümerIn</dd>
+</dl>
+<div class="org-src-container">
+<pre class="src src-python" id="org3ac5c22">rec.add_field<span style="color: #8b0000;">(</span>
+    Field<span style="color: #006400;">(</span>
+        tag = <span style="color: #61CE3C;">"710"</span>,
+        indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"2"</span>, <span style="color: #61CE3C;">" "</span><span style="color: #ff1493;">]</span>,
+        subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"a"</span>, <span style="color: #61CE3C;">"Universita&#776;tsbibliothek Graz"</span>, <span style="color: #61CE3C;">"0"</span>, <span style="color: #61CE3C;">"(DE-588)18018-X"</span>, <span style="color: #61CE3C;">"4"</span>, <span style="color: #61CE3C;">"own"</span><span style="color: #ff1493;">]</span>
+    <span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc7a928a" class="outline-4">
+<h4 id="orgc7a928a"><span class="section-number-4">4.3.3</span> <span class="done DONE">DONE</span> Leader</h4>
+<div class="outline-text-4" id="text-4-3-3">
+<ul class="org-ul">
+<li>LDR/06=t für handschriftliches Sprachmaterial. Wenn Noten vorliegen,
+muss das dann ausgebessert werden.</li>
+<li>Katalogisierungslevel LDR/17=5 für Teillevel (vorläufig) - muss dann beim
+Katalogisieren ausgebessert werden.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-python" id="org168dcd0"><span style="color: #ff69b4;">rec.leader</span> = <span style="color: #61CE3C;">"00000ntm#a22000005c#4500"</span>
+</pre>
+</div>
+</div>
+<ol class="org-ol">
+<li><a id="orga546747"></a><span class="done DONE">DONE</span> Prüfen, ob Alma beim Import Datensatzlänge etc. einträgt.<br />
+<div class="outline-text-5" id="text-4-3-3-1">
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-org1dcfff6" class="outline-4">
+<h4 id="org1dcfff6"><span class="section-number-4">4.3.4</span> <span class="done DONE">DONE</span> Beschreibstoff</h4>
+<div class="outline-text-4" id="text-4-3-4">
+<p>
+Für Books gibt es in 007 keinen Code für physical medium, daher wird der
+Text unverändert übernommen. Umso besser, dann muss nichts geprüft werden.
+</p>
+<div class="org-src-container">
+<pre class="src src-python" id="orga24d412"><span style="color: #ff69b4;">beschreibstoff</span> = row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Beschreibstoff"</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>
+rec.add_ordered_field<span style="color: #8b0000;">(</span>
+    Field<span style="color: #006400;">(</span>
+        tag = <span style="color: #61CE3C;">"340"</span>,
+        indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">" "</span>, <span style="color: #61CE3C;">" "</span><span style="color: #ff1493;">]</span>,
+        subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"a"</span>, beschreibstoff<span style="color: #ff1493;">]</span><span style="color: #006400;">)</span>
+<span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org8c516c3" class="outline-4">
+<h4 id="org8c516c3"><span class="section-number-4">4.3.5</span> <span class="done DONE">DONE</span> 008</h4>
+<div class="outline-text-4" id="text-4-3-5">
+<p>
+171013|2014####gw############|||#|#ger#u
+</p>
+<ul class="org-ul">
+<li class="on"><code>[X]</code> 00-05: Date entered on file</li>
+<li class="on"><code>[X]</code> 06: s</li>
+<li class="on"><code>[X]</code> 07-10: date_008()</li>
+<li class="on"><code>[X]</code> 11-14: "    "</li>
+<li class="on"><code>[X]</code> 15-17: Code für unbekannt</li>
+<li class="on"><code>[X]</code> 18-21: "||||"</li>
+<li class="on"><code>[X]</code> 22: "|"</li>
+<li class="on"><code>[X]</code> 23: " "</li>
+<li class="on"><code>[X]</code> 24-27: "||||"</li>
+<li class="on"><code>[X]</code> 28: " "</li>
+<li class="on"><code>[X]</code> 29: "0"</li>
+<li class="on"><code>[X]</code> 30: "0"</li>
+<li class="on"><code>[X]</code> 31: "|"</li>
+<li class="on"><code>[X]</code> 32: "|"</li>
+<li class="on"><code>[X]</code> 33: "|"</li>
+<li class="on"><code>[X]</code> 34: "|"</li>
+<li class="on"><code>[X]</code> 35-37: "   "</li>
+<li class="on"><code>[X]</code> 38: "|"</li>
+<li class="on"><code>[X]</code> 39: "|"</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-python" id="orga25eb2a"><span style="color: #ff69b4;">date_on_file</span> = datetime.datetime.now<span style="color: #8b0000;">()</span>.strftime<span style="color: #8b0000;">(</span><span style="color: #61CE3C;">"%y%m%d"</span><span style="color: #8b0000;">)</span>
+<span style="color: #ff69b4;">data008</span> = date_on_file + <span style="color: #61CE3C;">"s"</span> + year + <span style="color: #61CE3C;">"    "</span> + <span style="color: #61CE3C;">"xx "</span> + <span style="color: #61CE3C;">"||||"</span>  <span style="color: #61CE3C;">"|"</span> + <span style="color: #61CE3C;">" "</span> + <span style="color: #61CE3C;">"||||"</span> + <span style="color: #61CE3C;">" 00||||   ||"</span>
+rec.add_ordered_field<span style="color: #8b0000;">(</span>
+    Field<span style="color: #006400;">(</span>tag = <span style="color: #61CE3C;">"008"</span>,
+          data = data008<span style="color: #006400;">)</span>
+<span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org989b2bc" class="outline-4">
+<h4 id="org989b2bc"><span class="section-number-4">4.3.6</span> <span class="done DONE">DONE</span> 500 mit Stand</h4>
+<div class="outline-text-4" id="text-4-3-6">
+<div class="org-src-container">
+<pre class="src src-python" id="orgc2334c1">rec.add_ordered_field<span style="color: #8b0000;">(</span>
+    Field<span style="color: #006400;">(</span>
+        tag = <span style="color: #61CE3C;">"500"</span>,
+        indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">" "</span>, <span style="color: #61CE3C;">" "</span><span style="color: #ff1493;">]</span>,
+        subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"a"</span>, <span style="color: #61CE3C;">"Stand 2018"</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span>
+<span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org35c4fa6" class="outline-4">
+<h4 id="org35c4fa6"><span class="section-number-4">4.3.7</span> <span class="done DONE">DONE</span> Fußnote mit alter Signatur</h4>
+<div class="outline-text-4" id="text-4-3-7">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> <p>
+In 500 mit Präfix "Historische Signatur der Universitätsbibliothek Graz: XXXXX"
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python" id="org86ad917"><span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Signatur alt"</span><span style="color: #8b0000;">]</span>:
+    rec.add_field<span style="color: #8b0000;">(</span>
+        Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">'500'</span>,
+            indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">' '</span>, <span style="color: #61CE3C;">' '</span><span style="color: #ff1493;">]</span>,
+            subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">'a'</span>, f<span style="color: #61CE3C;">'Historische Signatur der Universit&#228;tsbibliothek Graz: {row["Signatur alt"].strip()}'</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span>
+    <span style="color: #8b0000;">)</span>
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgcda7bca" class="outline-4">
+<h4 id="orgcda7bca"><span class="section-number-4">4.3.8</span> <span class="done DONE">DONE</span> Vorbesitzer eintragen</h4>
+<div class="outline-text-4" id="text-4-3-8">
+<dl class="org-dl">
+<dt>fmo</dt><dd>frühere EingentümerIn</dd>
+</dl>
+</div>
+<ol class="org-ol">
+<li><a id="org83c710b"></a><span class="done DONE">DONE</span> Körperschaften<br />
+<div class="outline-text-5" id="text-4-3-8-1">
+<div class="org-src-container">
+<pre class="src src-python" id="orga959bcf"><span style="color: #ff69b4;">vb_kor</span> = <span style="color: #8b0000;">{}</span>
+<span style="color: #4c83ff;">with</span> <span style="color: #4c83ff;">open</span><span style="color: #8b0000;">(</span><span style="color: #61CE3C;">"sourcefiles/vb_kor.csv"</span><span style="color: #8b0000;">)</span> <span style="color: #4c83ff;">as</span> csvfile:
+    <span style="color: #ff69b4;">reader</span> = csv.reader<span style="color: #8b0000;">(</span>csvfile, delimiter=<span style="color: #61CE3C;">'\t'</span><span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">for</span> row <span style="color: #4c83ff;">in</span> reader:
+        vb_kor<span style="color: #8b0000;">[</span>row<span style="color: #006400;">[</span><span style="color: #96CBFE;">0</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">]</span> = <span style="color: #8b0000;">[</span><span style="color: #61CE3C;">'a'</span>, row<span style="color: #006400;">[</span><span style="color: #96CBFE;">1</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span>, <span style="color: #61CE3C;">'0'</span>, row<span style="color: #006400;">[</span><span style="color: #96CBFE;">2</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">]</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-python" id="orga378b95"><span style="color: #ff69b4;">vorbes_kor</span> = <span style="color: #8b0000;">[]</span>
+<span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Vorbesitz Institution"</span><span style="color: #8b0000;">]</span> != <span style="color: #61CE3C;">''</span>:
+    vorbes_kor.append<span style="color: #8b0000;">(</span>row<span style="color: #006400;">[</span><span style="color: #61CE3C;">"1. Vorbesitz Institution"</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">)</span>
+<span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"2. Vorbesitz Institution"</span><span style="color: #8b0000;">]</span> != <span style="color: #61CE3C;">''</span>:
+    vorbes_kor.append<span style="color: #8b0000;">(</span>row<span style="color: #006400;">[</span><span style="color: #61CE3C;">"2. Vorbesitz Institution"</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #4c83ff;">if</span> <span style="color: #4c83ff;">len</span><span style="color: #8b0000;">(</span>vorbes_kor<span style="color: #8b0000;">)</span> &gt; <span style="color: #96CBFE;">0</span>:
+    <span style="color: #4c83ff;">for</span> kor <span style="color: #4c83ff;">in</span> vorbes_kor:
+        <span style="color: #4c83ff;">if</span> kor <span style="color: #4c83ff;">not</span> <span style="color: #4c83ff;">in</span> vb_kor:
+            <span style="color: #ff69b4;">korfield</span> = Field<span style="color: #8b0000;">(</span>
+                tag = <span style="color: #61CE3C;">'710'</span>,
+                indicators = <span style="color: #006400;">[</span><span style="color: #61CE3C;">'2'</span>, <span style="color: #61CE3C;">' '</span><span style="color: #006400;">]</span>,
+                subfields = <span style="color: #006400;">[</span><span style="color: #61CE3C;">'a'</span>, kor, <span style="color: #61CE3C;">'4'</span>, <span style="color: #61CE3C;">'fmo'</span><span style="color: #006400;">]</span><span style="color: #8b0000;">)</span>
+            rec.add_ordered_field<span style="color: #8b0000;">(</span>korfield<span style="color: #8b0000;">)</span>
+            <span style="color: #4c83ff;">print</span><span style="color: #8b0000;">(</span>korfield<span style="color: #8b0000;">)</span>
+        <span style="color: #4c83ff;">else</span>:
+            <span style="color: #ff69b4;">korfield</span> = Field<span style="color: #8b0000;">(</span>
+                tag = <span style="color: #61CE3C;">'710'</span>,
+                indicators = <span style="color: #006400;">[</span><span style="color: #61CE3C;">'2'</span>, <span style="color: #61CE3C;">' '</span><span style="color: #006400;">]</span>,
+                subfields = vb_kor<span style="color: #006400;">[</span>kor<span style="color: #006400;">]</span> + <span style="color: #006400;">[</span><span style="color: #61CE3C;">'4'</span>, <span style="color: #61CE3C;">'fmo'</span><span style="color: #006400;">]</span><span style="color: #8b0000;">)</span>
+            rec.add_ordered_field<span style="color: #8b0000;">(</span>korfield<span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</li>
+<li><a id="org84bab9a"></a><span class="done DONE">DONE</span> Personen<br />
+<div class="outline-text-5" id="text-4-3-8-2">
+</div>
+<ol class="org-ol">
+<li><a id="orgd806c76"></a><span class="done DONE">DONE</span> Dictionary bauen<br />
+<div class="outline-text-6" id="text-4-3-8-2-1">
+<p>
+Zuerst wird das dict gebaut (im globalen Namespace)
+</p>
+<div class="org-src-container">
+<pre class="src src-python" id="org2a0bb4e"><span style="color: #ff69b4;">vb_pers</span> = <span style="color: #8b0000;">{}</span>
+<span style="color: #4c83ff;">with</span> <span style="color: #4c83ff;">open</span><span style="color: #8b0000;">(</span><span style="color: #61CE3C;">"sourcefiles/Namensansetzung_Kern_Alma.csv"</span><span style="color: #8b0000;">)</span> <span style="color: #4c83ff;">as</span> csvfile:
+    <span style="color: #ff69b4;">reader</span> = csv.reader<span style="color: #8b0000;">(</span>csvfile, delimiter=<span style="color: #61CE3C;">'\t'</span><span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">for</span> row <span style="color: #4c83ff;">in</span> reader:
+        vb_pers<span style="color: #8b0000;">[</span>row<span style="color: #006400;">[</span><span style="color: #96CBFE;">0</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">]</span> = <span style="color: #8b0000;">[</span><span style="color: #61CE3C;">'a'</span>, row<span style="color: #006400;">[</span><span style="color: #96CBFE;">1</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span>, <span style="color: #61CE3C;">'c'</span>, row<span style="color: #006400;">[</span><span style="color: #96CBFE;">2</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span>, <span style="color: #61CE3C;">'0'</span>, row<span style="color: #006400;">[</span><span style="color: #96CBFE;">3</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">]</span>
+</pre>
+</div>
+</div>
+</li>
+<li><a id="orgec7b9f3"></a><span class="done DONE">DONE</span> Personen in ein Feld schreiben<br />
+<div class="outline-text-6" id="text-4-3-8-2-2">
+<div class="org-src-container">
+<pre class="src src-python" id="org12d73ef"><span style="color: #ff69b4;">vorbes_nat_pers</span> = <span style="color: #8b0000;">[]</span>
+<span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. VB nat&#252;rl. Personen"</span><span style="color: #8b0000;">]</span> != <span style="color: #61CE3C;">''</span>:
+    vorbes_nat_pers.append<span style="color: #8b0000;">(</span>row<span style="color: #006400;">[</span><span style="color: #61CE3C;">"1. VB nat&#252;rl. Personen"</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">)</span>
+<span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"2. VB nat&#252;rl. Personen"</span><span style="color: #8b0000;">]</span> != <span style="color: #61CE3C;">''</span>:
+    vorbes_nat_pers.append<span style="color: #8b0000;">(</span>row<span style="color: #006400;">[</span><span style="color: #61CE3C;">"2. VB nat&#252;rl. Personen"</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">)</span>
+
+<span style="color: #4c83ff;">if</span> <span style="color: #4c83ff;">len</span><span style="color: #8b0000;">(</span>vorbes_nat_pers<span style="color: #8b0000;">)</span> &gt; <span style="color: #96CBFE;">0</span>:
+    <span style="color: #4c83ff;">for</span> pers <span style="color: #4c83ff;">in</span> vorbes_nat_pers:
+        <span style="color: #4c83ff;">if</span> pers <span style="color: #4c83ff;">not</span> <span style="color: #4c83ff;">in</span> vb_pers:
+            <span style="color: #4c83ff;">print</span><span style="color: #8b0000;">(</span>f<span style="color: #61CE3C;">"Person nicht vorhanden: {pers}"</span><span style="color: #8b0000;">)</span>
+            <span style="color: #4c83ff;">continue</span>
+        <span style="color: #4c83ff;">else</span>:
+            <span style="color: #ff69b4;">persfield</span> = Field<span style="color: #8b0000;">(</span>
+                tag = <span style="color: #61CE3C;">'700'</span>,
+                indicators = <span style="color: #006400;">[</span><span style="color: #61CE3C;">'1'</span>, <span style="color: #61CE3C;">' '</span><span style="color: #006400;">]</span>,
+                subfields = vb_pers<span style="color: #006400;">[</span>pers<span style="color: #006400;">]</span> + <span style="color: #006400;">[</span><span style="color: #61CE3C;">'4'</span>, <span style="color: #61CE3C;">'fmo'</span><span style="color: #006400;">]</span><span style="color: #8b0000;">)</span>
+            <span style="color: #4c83ff;">if</span> <span style="color: #61CE3C;">","</span> <span style="color: #4c83ff;">not</span> <span style="color: #4c83ff;">in</span> vb_pers<span style="color: #8b0000;">[</span>pers<span style="color: #8b0000;">][</span><span style="color: #96CBFE;">1</span><span style="color: #8b0000;">]</span>:
+                <span style="color: #ff69b4;">persfield.indicators</span> = <span style="color: #8b0000;">[</span><span style="color: #61CE3C;">'0'</span>, <span style="color: #61CE3C;">' '</span><span style="color: #8b0000;">]</span>
+            rec.add_ordered_field<span style="color: #8b0000;">(</span>persfield<span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+<div id="outline-container-org741e0c5" class="outline-4">
+<h4 id="org741e0c5"><span class="section-number-4">4.3.9</span> <span class="done DONE">DONE</span> 300</h4>
+<div class="outline-text-4" id="text-4-3-9">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> sf a: <code>f"{Umfang} Blätter"</code></li>
+<li class="on"><code>[X]</code> sf c: <code>f"{row["Format"].strip()}, {row["Größe h : b "].strip().replace(":", "x")}"</code></li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-python" id="org91ef4f1"><span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">Umfangsangabe in 300</span>
+<span style="color: #4c83ff;">if</span> <span style="color: #61CE3C;">"rolle"</span> <span style="color: #4c83ff;">in</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Umfang"</span><span style="color: #8b0000;">]</span>.lower<span style="color: #8b0000;">()</span>:
+    <span style="color: #ff69b4;">sfa</span> = row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Umfang"</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>
+<span style="color: #4c83ff;">else</span>:
+    <span style="color: #ff69b4;">sfa</span> = f<span style="color: #61CE3C;">'{row["Umfang"].strip()} Bl&#228;tter'</span>
+
+<span style="color: #ff69b4;">sfc</span> = f<span style="color: #61CE3C;">'{row["Format"].strip()}, {row["Gr&#246;&#223;e h : b   "].strip().replace(":", "x")}'</span>
+
+<span style="color: #4c83ff;">if</span> sfa.startswith<span style="color: #8b0000;">(</span><span style="color: #61CE3C;">" "</span><span style="color: #8b0000;">)</span>:
+    <span style="color: #ff69b4;">sfa</span> = <span style="color: #61CE3C;">""</span>
+<span style="color: #4c83ff;">if</span> sfc.startswith<span style="color: #8b0000;">(</span><span style="color: #61CE3C;">", "</span><span style="color: #8b0000;">)</span>:
+    <span style="color: #ff69b4;">sfc</span> = sfc<span style="color: #8b0000;">[</span><span style="color: #96CBFE;">2</span>:<span style="color: #8b0000;">]</span>
+<span style="color: #4c83ff;">if</span> sfc.endswith<span style="color: #8b0000;">(</span><span style="color: #61CE3C;">", "</span><span style="color: #8b0000;">)</span>:
+    <span style="color: #ff69b4;">sfc</span> = sfc<span style="color: #8b0000;">[</span>:-<span style="color: #96CBFE;">2</span><span style="color: #8b0000;">]</span>
+rec.add_ordered_field<span style="color: #8b0000;">(</span>
+    Field<span style="color: #006400;">(</span>
+        tag = <span style="color: #61CE3C;">'300'</span>,
+        indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">' '</span>, <span style="color: #61CE3C;">' '</span><span style="color: #ff1493;">]</span>,
+        subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"a"</span>, sfa, <span style="color: #61CE3C;">"c"</span>, sfc<span style="color: #ff1493;">]</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3431e09" class="outline-4">
+<h4 id="org3431e09"><span class="section-number-4">4.3.10</span> <span class="done DONE">DONE</span> Jahreszahl</h4>
+<div class="outline-text-4" id="text-4-3-10">
+<p>
+Das Erstellen der Jahreszahl ist nicht trivial, weil es sehr heterogene
+Angaben etc. gibt. Zuerst müssen wir einmal zu einem Datum kommen. Das
+machen wir mit der Funktion <code>get_date()</code>:
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-python" id="org631f23a"><span style="color: #4c83ff;">def</span> <span style="color: #ff1493;">get_date</span><span style="color: #8b0000;">(</span>row<span style="color: #8b0000;">)</span>:
+    <span style="color: #FBDE2D;">"""Return the raw date for 264 $$c and 008"""</span>
+    <span style="color: #ff69b4;">data</span> = <span style="color: #96CBFE;">None</span>
+
+    <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Dat. exakt"</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>:
+        <span style="color: #ff69b4;">data</span> = row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Dat. exakt"</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>
+    <span style="color: #4c83ff;">elif</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Dat. Ex. Von - bis"</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>:
+        <span style="color: #ff69b4;">data</span> = row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Dat. Ex. Von - bis"</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>
+    <span style="color: #4c83ff;">elif</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">'1. Dat. ca., um, vor, Anfang, Ende'</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>:
+        <span style="color: #ff69b4;">data</span> = row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">'1. Dat. ca., um, vor, Anfang, Ende'</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>
+    <span style="color: #4c83ff;">elif</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Dat. Jh. "</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>:
+        <span style="color: #ff69b4;">data</span> = row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Dat. Jh. "</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>
+    <span style="color: #4c83ff;">else</span>:
+        <span style="color: #ff69b4;">data</span> = <span style="color: #61CE3C;">"Datum unbekannt"</span>
+
+    <span style="color: #4c83ff;">return</span> data
+</pre>
+</div>
+</div>
+
+<ol class="org-ol">
+<li><a id="org926e468"></a>Für 264<br />
+<div class="outline-text-5" id="text-4-3-10-1">
+<p>
+Für 264 können wir nehmen, was da ist, wenn etwas da ist:
+</p>
+<div class="org-src-container">
+<pre class="src src-python" id="orga98442f">rec.add_ordered_field<span style="color: #8b0000;">(</span>
+    pymarc.Field<span style="color: #006400;">(</span>
+        tag = <span style="color: #61CE3C;">"264"</span>,
+        indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">" "</span>, <span style="color: #61CE3C;">"1"</span><span style="color: #ff1493;">]</span>,
+        subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"c"</span>, f<span style="color: #61CE3C;">"[{get_date(row)}]"</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</li>
+
+
+<li><a id="orgf3c1270"></a>Für 008<br />
+<div class="outline-text-5" id="text-4-3-10-2">
+<p>
+In 008 müssen wir das Datum, das wir haben, in einen vierstellige Zahl
+umwandeln.
+</p>
+
+<p>
+Sollten wir nicht schon ein passendes Datum haben, brauchen wir ein
+Mapping für Jahrhundertangaben etc.:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python" id="orga70b8ad"><span style="color: #ff69b4;">map_dates_008</span> = <span style="color: #8b0000;">{</span>
+    <span style="color: #61CE3C;">"VI"</span>: <span style="color: #61CE3C;">"501"</span>,
+    <span style="color: #61CE3C;">"IX/1"</span>: <span style="color: #61CE3C;">"801"</span>,
+    <span style="color: #61CE3C;">"Mitte IX"</span>: <span style="color: #61CE3C;">"851"</span>,
+    <span style="color: #61CE3C;">"Ende IX"</span>: <span style="color: #61CE3C;">"881"</span>,
+    <span style="color: #61CE3C;">"Anfang X"</span>: <span style="color: #61CE3C;">"901"</span>,
+    <span style="color: #61CE3C;">"Mitte X"</span>: <span style="color: #61CE3C;">"951"</span>,
+    <span style="color: #61CE3C;">"Ende X"</span>: <span style="color: #61CE3C;">"981"</span>,
+    <span style="color: #61CE3C;">"X"</span>: <span style="color: #61CE3C;">"901"</span>,
+    <span style="color: #61CE3C;">"X/1"</span>: <span style="color: #61CE3C;">"901"</span>,
+    <span style="color: #61CE3C;">"X/2"</span>: <span style="color: #61CE3C;">"951"</span>,
+    <span style="color: #61CE3C;">"Anfang XI"</span>: <span style="color: #61CE3C;">"1001"</span>,
+    <span style="color: #61CE3C;">"Mitte XI"</span>: <span style="color: #61CE3C;">"1051"</span>,
+    <span style="color: #61CE3C;">"Ende XI"</span>: <span style="color: #61CE3C;">"1081"</span>,
+    <span style="color: #61CE3C;">"XI"</span>: <span style="color: #61CE3C;">"1051"</span>,
+    <span style="color: #61CE3C;">"XI/1"</span>: <span style="color: #61CE3C;">"1001"</span>,
+    <span style="color: #61CE3C;">"XI/2"</span>: <span style="color: #61CE3C;">"1051"</span>,
+    <span style="color: #61CE3C;">"Anfang XII"</span>: <span style="color: #61CE3C;">"1101"</span>,
+    <span style="color: #61CE3C;">"Mitte XII"</span>: <span style="color: #61CE3C;">"1151"</span>,
+    <span style="color: #61CE3C;">"Ende XII"</span>: <span style="color: #61CE3C;">"1181"</span>,
+    <span style="color: #61CE3C;">"XII"</span>: <span style="color: #61CE3C;">"1151"</span>,
+    <span style="color: #61CE3C;">"XII/1"</span>: <span style="color: #61CE3C;">"1101"</span>,
+    <span style="color: #61CE3C;">"XII/2"</span>: <span style="color: #61CE3C;">"1151"</span>,
+    <span style="color: #61CE3C;">"Anfang XIII"</span>: <span style="color: #61CE3C;">"1201"</span>,
+    <span style="color: #61CE3C;">"Mitte XIII"</span>: <span style="color: #61CE3C;">"1251"</span>,
+    <span style="color: #61CE3C;">"Ende XIII"</span>: <span style="color: #61CE3C;">"1281"</span>,
+    <span style="color: #61CE3C;">"XIII"</span>: <span style="color: #61CE3C;">"1251"</span>,
+    <span style="color: #61CE3C;">"XIII/1"</span>: <span style="color: #61CE3C;">"1201"</span>,
+    <span style="color: #61CE3C;">"XIII/2"</span>: <span style="color: #61CE3C;">"1251"</span>,
+    <span style="color: #61CE3C;">"Anfang XIV"</span>: <span style="color: #61CE3C;">"1301"</span>,
+    <span style="color: #61CE3C;">"Mitte XIV"</span>: <span style="color: #61CE3C;">"1351"</span>,
+    <span style="color: #61CE3C;">"Ende XIV"</span>: <span style="color: #61CE3C;">"1381"</span>,
+    <span style="color: #61CE3C;">"Sp&#228;tes XIV"</span>: <span style="color: #61CE3C;">"1381"</span>,
+    <span style="color: #61CE3C;">"XIV"</span>: <span style="color: #61CE3C;">"1351"</span>,
+    <span style="color: #61CE3C;">"XIV/1"</span>: <span style="color: #61CE3C;">"1301"</span>,
+    <span style="color: #61CE3C;">"XIV/2"</span>: <span style="color: #61CE3C;">"1351"</span>,
+    <span style="color: #61CE3C;">"Anfang XV"</span>: <span style="color: #61CE3C;">"1401"</span>,
+    <span style="color: #61CE3C;">"Erstes Viertel XV"</span>: <span style="color: #61CE3C;">"1401"</span>,
+    <span style="color: #61CE3C;">"Mitte XV"</span>: <span style="color: #61CE3C;">"1451"</span>,
+    <span style="color: #61CE3C;">"Nach Mitte XV"</span>: <span style="color: #61CE3C;">"1451"</span>,
+    <span style="color: #61CE3C;">"Ende XV"</span>: <span style="color: #61CE3C;">"1481"</span>,
+    <span style="color: #61CE3C;">"XV"</span>: <span style="color: #61CE3C;">"1451"</span>,
+    <span style="color: #61CE3C;">"XV/1"</span>: <span style="color: #61CE3C;">"1401"</span>,
+    <span style="color: #61CE3C;">"XV/2"</span>: <span style="color: #61CE3C;">"1451"</span>,
+    <span style="color: #61CE3C;">"Anfang XVI"</span>: <span style="color: #61CE3C;">"1501"</span>,
+    <span style="color: #61CE3C;">"Mitte XVI"</span>: <span style="color: #61CE3C;">"1551"</span>,
+    <span style="color: #61CE3C;">"Ende XVI"</span>: <span style="color: #61CE3C;">"1581"</span>,
+    <span style="color: #61CE3C;">"XVI"</span>: <span style="color: #61CE3C;">"1551"</span>,
+    <span style="color: #61CE3C;">"XVI/1"</span>: <span style="color: #61CE3C;">"1501"</span>,
+    <span style="color: #61CE3C;">"XVI/2"</span>: <span style="color: #61CE3C;">"1551"</span>,
+    <span style="color: #61CE3C;">"Anfang XVII"</span>: <span style="color: #61CE3C;">"1601"</span>,
+    <span style="color: #61CE3C;">"Mitte XVII"</span>: <span style="color: #61CE3C;">"1651"</span>,
+    <span style="color: #61CE3C;">"Ende XVII"</span>: <span style="color: #61CE3C;">"1681"</span>,
+    <span style="color: #61CE3C;">"XVII"</span>: <span style="color: #61CE3C;">"1651"</span>,
+    <span style="color: #61CE3C;">"XVII/1"</span>: <span style="color: #61CE3C;">"1601"</span>,
+    <span style="color: #61CE3C;">"XVII/2"</span>: <span style="color: #61CE3C;">"1651"</span>,
+    <span style="color: #61CE3C;">"Anfang XVIII"</span>: <span style="color: #61CE3C;">"1701"</span>,
+    <span style="color: #61CE3C;">"Vor Mitte XVIII"</span>: <span style="color: #61CE3C;">"1701"</span>,
+    <span style="color: #61CE3C;">"Mitte XVIII"</span>: <span style="color: #61CE3C;">"1751"</span>,
+    <span style="color: #61CE3C;">"Ende XVIII"</span>: <span style="color: #61CE3C;">"1781"</span>,
+    <span style="color: #61CE3C;">"XVIII"</span>: <span style="color: #61CE3C;">"1751"</span>,
+    <span style="color: #61CE3C;">"XVIII/1"</span>: <span style="color: #61CE3C;">"1701"</span>,
+    <span style="color: #61CE3C;">"XVIII/2"</span>: <span style="color: #61CE3C;">"1751"</span>,
+    <span style="color: #61CE3C;">"Mitte XIX"</span>: <span style="color: #61CE3C;">"1851"</span>,
+    <span style="color: #61CE3C;">"XIX"</span>: <span style="color: #61CE3C;">"1801"</span>,
+    <span style="color: #61CE3C;">"XIX/1"</span>: <span style="color: #61CE3C;">"1801"</span>,
+    <span style="color: #61CE3C;">"XIX/2"</span>: <span style="color: #61CE3C;">"1851"</span>,
+<span style="color: #8b0000;">}</span>
+</pre>
+</div>
+
+<p>
+Dann erarbeiten wir uns das Datum mittels der Funktion <code>date_008()</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-python" id="org65de53c"><span style="color: #4c83ff;">def</span> <span style="color: #ff1493;">date_008</span><span style="color: #8b0000;">(</span>date<span style="color: #8b0000;">)</span>:
+    <span style="color: #ff69b4;">year</span> = <span style="color: #96CBFE;">None</span>
+    <span style="color: #4c83ff;">if</span> date <span style="color: #4c83ff;">in</span> map_dates_008.keys<span style="color: #8b0000;">()</span>:
+        <span style="color: #ff69b4;">year</span> = map_dates_008<span style="color: #8b0000;">[</span>date<span style="color: #8b0000;">]</span>.zfill<span style="color: #8b0000;">(</span><span style="color: #96CBFE;">4</span><span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">else</span>:
+        <span style="color: #ff69b4;">re_match</span> = re.search<span style="color: #8b0000;">(</span>r<span style="color: #61CE3C;">'\d{3}\d?'</span>, date<span style="color: #8b0000;">)</span>
+        <span style="color: #4c83ff;">if</span> re_match <span style="color: #4c83ff;">is</span> <span style="color: #4c83ff;">not</span> <span style="color: #96CBFE;">None</span>:
+            <span style="color: #ff69b4;">year</span> = re_match.group<span style="color: #8b0000;">(</span><span style="color: #96CBFE;">0</span><span style="color: #8b0000;">)</span>.strip<span style="color: #8b0000;">()</span>.zfill<span style="color: #8b0000;">(</span><span style="color: #96CBFE;">4</span><span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">return</span> year
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-orgedf2968" class="outline-4">
+<h4 id="orgedf2968"><span class="section-number-4">4.3.11</span> <span class="done DONE">DONE</span> Bestand</h4>
+<div class="outline-text-4" id="text-4-3-11">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> Standort</li>
+<li class="on"><code>[X]</code> Signatur
+<ul class="org-ul">
+<li class="on"><code>[X]</code> Präfix: "Ms "</li>
+</ul></li>
+<li class="on"><code>[X]</code> Historische Signatur in alt call nr</li>
+<li class="on"><code>[X]</code> <code>$$9LOCAL</code>, damit das Feld, mit dem der Bestand erstellt wird, nicht
+in die Verbunddatenbank eingespielt wird</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-python" id="org3961bac"><span style="color: #ff69b4;">standort</span> = <span style="color: #61CE3C;">"SSHS"</span>
+<span style="color: #ff69b4;">signatur</span> = <span style="color: #61CE3C;">"Ms "</span> + row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Signatur modern"</span><span style="color: #8b0000;">]</span>
+
+rec.add_field<span style="color: #8b0000;">(</span>
+    Field<span style="color: #006400;">(</span>
+        tag = <span style="color: #61CE3C;">"995"</span>,
+        indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">" "</span>, <span style="color: #61CE3C;">" "</span><span style="color: #ff1493;">]</span>,
+        subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"b"</span>, <span style="color: #61CE3C;">"BHB"</span>, 
+                     <span style="color: #61CE3C;">"c"</span>, standort,
+                     <span style="color: #61CE3C;">"h"</span>, signatur,
+                     <span style="color: #61CE3C;">"a"</span>, row<span style="color: #ffff00;">[</span><span style="color: #61CE3C;">"Signatur alt"</span><span style="color: #ffff00;">]</span>,
+                     <span style="color: #61CE3C;">"9"</span>, <span style="color: #61CE3C;">"LOCAL"</span>
+                     <span style="color: #ff1493;">]</span>
+    <span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcd41cf8" class="outline-4">
+<h4 id="orgcd41cf8"><span class="section-number-4">4.3.12</span> Die ganze Funktion</h4>
+<div class="outline-text-4" id="text-4-3-12">
+<div class="org-src-container">
+<pre class="src src-python" id="orge5b4dd9"><span style="color: #4c83ff;">def</span> <span style="color: #ff1493;">create_record</span><span style="color: #8b0000;">(</span>row<span style="color: #8b0000;">)</span>:
+    <span style="color: #FBDE2D;">"""Take a  row from the csv dict and return a pymarc.Record"""</span>
+    <span style="color: #ff69b4;">rec</span> = Record<span style="color: #8b0000;">()</span>
+    <span style="color: #ff69b4;">rec.leader</span> = <span style="color: #61CE3C;">"00000ntm#a22000005c#4500"</span>
+    rec.add_ordered_field<span style="color: #8b0000;">(</span>
+        pymarc.Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">"005"</span>,
+            data = datetime.datetime.now<span style="color: #ff1493;">()</span>.strftime<span style="color: #ff1493;">(</span><span style="color: #61CE3C;">"%Y%m%d%H%M%S.0"</span><span style="color: #ff1493;">)</span>
+        <span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+    <span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">generiere Inhalt f&#252;r 245</span>
+    <span style="color: #4c83ff;">if</span> <span style="color: #4c83ff;">not</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">'Signatur modern'</span><span style="color: #8b0000;">]</span>:
+        <span style="color: #4c83ff;">return</span> <span style="color: #61CE3C;">"Keine Signatur vorhanden"</span>
+    <span style="color: #4c83ff;">else</span>:
+        <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Bd."</span><span style="color: #8b0000;">]</span>:
+            <span style="color: #ff69b4;">val245</span> = f<span style="color: #61CE3C;">"UBG Ms {row['Signatur modern'].strip()}/{row['Bd.'].strip()}"</span>
+        <span style="color: #4c83ff;">else</span>:
+            <span style="color: #ff69b4;">val245</span> = f<span style="color: #61CE3C;">"UBG Ms {row['Signatur modern'].strip()}"</span>
+
+        rec.add_ordered_field<span style="color: #8b0000;">(</span>
+            Field<span style="color: #006400;">(</span>
+                tag = <span style="color: #61CE3C;">'245'</span>,
+                indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">'0'</span>, <span style="color: #61CE3C;">'0'</span><span style="color: #ff1493;">]</span>,
+                subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">'a'</span>, val245<span style="color: #ff1493;">]</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+    <span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">Umfangsangabe in 300</span>
+    <span style="color: #4c83ff;">if</span> <span style="color: #61CE3C;">"rolle"</span> <span style="color: #4c83ff;">in</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Umfang"</span><span style="color: #8b0000;">]</span>.lower<span style="color: #8b0000;">()</span>:
+        <span style="color: #ff69b4;">sfa</span> = row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Umfang"</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>
+    <span style="color: #4c83ff;">else</span>:
+        <span style="color: #ff69b4;">sfa</span> = f<span style="color: #61CE3C;">'{row["Umfang"].strip()} Bl&#228;tter'</span>
+
+    <span style="color: #ff69b4;">sfc</span> = f<span style="color: #61CE3C;">'{row["Format"].strip()}, {row["Gr&#246;&#223;e h : b   "].strip().replace(":", "x")}'</span>
+
+    <span style="color: #4c83ff;">if</span> sfa.startswith<span style="color: #8b0000;">(</span><span style="color: #61CE3C;">" "</span><span style="color: #8b0000;">)</span>:
+        <span style="color: #ff69b4;">sfa</span> = <span style="color: #61CE3C;">""</span>
+    <span style="color: #4c83ff;">if</span> sfc.startswith<span style="color: #8b0000;">(</span><span style="color: #61CE3C;">", "</span><span style="color: #8b0000;">)</span>:
+        <span style="color: #ff69b4;">sfc</span> = sfc<span style="color: #8b0000;">[</span><span style="color: #96CBFE;">2</span>:<span style="color: #8b0000;">]</span>
+    <span style="color: #4c83ff;">if</span> sfc.endswith<span style="color: #8b0000;">(</span><span style="color: #61CE3C;">", "</span><span style="color: #8b0000;">)</span>:
+        <span style="color: #ff69b4;">sfc</span> = sfc<span style="color: #8b0000;">[</span>:-<span style="color: #96CBFE;">2</span><span style="color: #8b0000;">]</span>
+    rec.add_ordered_field<span style="color: #8b0000;">(</span>
+        Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">'300'</span>,
+            indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">' '</span>, <span style="color: #61CE3C;">' '</span><span style="color: #ff1493;">]</span>,
+            subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"a"</span>, sfa, <span style="color: #61CE3C;">"c"</span>, sfc<span style="color: #ff1493;">]</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Signatur alt"</span><span style="color: #8b0000;">]</span>:
+        rec.add_field<span style="color: #8b0000;">(</span>
+            Field<span style="color: #006400;">(</span>
+                tag = <span style="color: #61CE3C;">'500'</span>,
+                indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">' '</span>, <span style="color: #61CE3C;">' '</span><span style="color: #ff1493;">]</span>,
+                subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">'a'</span>, f<span style="color: #61CE3C;">'Historische Signatur der Universit&#228;tsbibliothek Graz: {row["Signatur alt"].strip()}'</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span>
+        <span style="color: #8b0000;">)</span>
+    rec.add_ordered_field<span style="color: #8b0000;">(</span>
+        Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">"500"</span>,
+            indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">" "</span>, <span style="color: #61CE3C;">" "</span><span style="color: #ff1493;">]</span>,
+            subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"a"</span>, <span style="color: #61CE3C;">"Stand 2018"</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span>
+    <span style="color: #8b0000;">)</span>
+    <span style="color: #ff69b4;">beschreibstoff</span> = row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Beschreibstoff"</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>
+    rec.add_ordered_field<span style="color: #8b0000;">(</span>
+        Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">"340"</span>,
+            indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">" "</span>, <span style="color: #61CE3C;">" "</span><span style="color: #ff1493;">]</span>,
+            subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"a"</span>, beschreibstoff<span style="color: #ff1493;">]</span><span style="color: #006400;">)</span>
+    <span style="color: #8b0000;">)</span>
+    rec.add_ordered_field<span style="color: #8b0000;">(</span>
+        pymarc.Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">"264"</span>,
+            indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">" "</span>, <span style="color: #61CE3C;">"1"</span><span style="color: #ff1493;">]</span>,
+            subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"c"</span>, f<span style="color: #61CE3C;">"[{get_date(row)}]"</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+    rec.add_field<span style="color: #8b0000;">(</span>
+        Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">"710"</span>,
+            indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"2"</span>, <span style="color: #61CE3C;">" "</span><span style="color: #ff1493;">]</span>,
+            subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"a"</span>, <span style="color: #61CE3C;">"Universita&#776;tsbibliothek Graz"</span>, <span style="color: #61CE3C;">"0"</span>, <span style="color: #61CE3C;">"(DE-588)18018-X"</span>, <span style="color: #61CE3C;">"4"</span>, <span style="color: #61CE3C;">"own"</span><span style="color: #ff1493;">]</span>
+        <span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+    <span style="color: #ff69b4;">date</span> = get_date<span style="color: #8b0000;">(</span>row<span style="color: #8b0000;">)</span>
+
+    <span style="color: #4c83ff;">if</span> date == <span style="color: #61CE3C;">"Datum unbekannt"</span>:
+        <span style="color: #4c83ff;">print</span><span style="color: #8b0000;">(</span><span style="color: #61CE3C;">"Kein Datum vorhanden: "</span> + val245<span style="color: #8b0000;">)</span>
+        <span style="color: #4c83ff;">return</span> f<span style="color: #61CE3C;">"{val245}: Kein Datum vorhanden"</span>
+    <span style="color: #4c83ff;">else</span>:
+        <span style="color: #ff69b4;">year</span> = date_008<span style="color: #8b0000;">(</span>date<span style="color: #8b0000;">)</span>
+        <span style="color: #4c83ff;">if</span> year <span style="color: #4c83ff;">is</span> <span style="color: #96CBFE;">None</span>:
+            <span style="color: #4c83ff;">print</span><span style="color: #8b0000;">(</span><span style="color: #61CE3C;">"Keine Jahreszahl f&#252;r 008 extrahierbar: "</span> + val245<span style="color: #8b0000;">)</span>
+            <span style="color: #4c83ff;">return</span> f<span style="color: #61CE3C;">"{val245}: Keine Jahreszahl f&#252;r 008 extrahierbar."</span>
+
+    <span style="color: #ff69b4;">date_on_file</span> = datetime.datetime.now<span style="color: #8b0000;">()</span>.strftime<span style="color: #8b0000;">(</span><span style="color: #61CE3C;">"%y%m%d"</span><span style="color: #8b0000;">)</span>
+    <span style="color: #ff69b4;">data008</span> = date_on_file + <span style="color: #61CE3C;">"s"</span> + year + <span style="color: #61CE3C;">"    "</span> + <span style="color: #61CE3C;">"xx "</span> + <span style="color: #61CE3C;">"||||"</span>  <span style="color: #61CE3C;">"|"</span> + <span style="color: #61CE3C;">" "</span> + <span style="color: #61CE3C;">"||||"</span> + <span style="color: #61CE3C;">" 00||||   ||"</span>
+    rec.add_ordered_field<span style="color: #8b0000;">(</span>
+        Field<span style="color: #006400;">(</span>tag = <span style="color: #61CE3C;">"008"</span>,
+              data = data008<span style="color: #006400;">)</span>
+    <span style="color: #8b0000;">)</span>
+    <span style="color: #ff69b4;">vorbes_nat_pers</span> = <span style="color: #8b0000;">[]</span>
+    <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. VB nat&#252;rl. Personen"</span><span style="color: #8b0000;">]</span> != <span style="color: #61CE3C;">''</span>:
+        vorbes_nat_pers.append<span style="color: #8b0000;">(</span>row<span style="color: #006400;">[</span><span style="color: #61CE3C;">"1. VB nat&#252;rl. Personen"</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"2. VB nat&#252;rl. Personen"</span><span style="color: #8b0000;">]</span> != <span style="color: #61CE3C;">''</span>:
+        vorbes_nat_pers.append<span style="color: #8b0000;">(</span>row<span style="color: #006400;">[</span><span style="color: #61CE3C;">"2. VB nat&#252;rl. Personen"</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">)</span>
+
+    <span style="color: #4c83ff;">if</span> <span style="color: #4c83ff;">len</span><span style="color: #8b0000;">(</span>vorbes_nat_pers<span style="color: #8b0000;">)</span> &gt; <span style="color: #96CBFE;">0</span>:
+        <span style="color: #4c83ff;">for</span> pers <span style="color: #4c83ff;">in</span> vorbes_nat_pers:
+            <span style="color: #4c83ff;">if</span> pers <span style="color: #4c83ff;">not</span> <span style="color: #4c83ff;">in</span> vb_pers:
+                <span style="color: #4c83ff;">print</span><span style="color: #8b0000;">(</span>f<span style="color: #61CE3C;">"Person nicht vorhanden: {pers}"</span><span style="color: #8b0000;">)</span>
+                <span style="color: #4c83ff;">continue</span>
+            <span style="color: #4c83ff;">else</span>:
+                <span style="color: #ff69b4;">persfield</span> = Field<span style="color: #8b0000;">(</span>
+                    tag = <span style="color: #61CE3C;">'700'</span>,
+                    indicators = <span style="color: #006400;">[</span><span style="color: #61CE3C;">'1'</span>, <span style="color: #61CE3C;">' '</span><span style="color: #006400;">]</span>,
+                    subfields = vb_pers<span style="color: #006400;">[</span>pers<span style="color: #006400;">]</span> + <span style="color: #006400;">[</span><span style="color: #61CE3C;">'4'</span>, <span style="color: #61CE3C;">'fmo'</span><span style="color: #006400;">]</span><span style="color: #8b0000;">)</span>
+                <span style="color: #4c83ff;">if</span> <span style="color: #61CE3C;">","</span> <span style="color: #4c83ff;">not</span> <span style="color: #4c83ff;">in</span> vb_pers<span style="color: #8b0000;">[</span>pers<span style="color: #8b0000;">][</span><span style="color: #96CBFE;">1</span><span style="color: #8b0000;">]</span>:
+                    <span style="color: #ff69b4;">persfield.indicators</span> = <span style="color: #8b0000;">[</span><span style="color: #61CE3C;">'0'</span>, <span style="color: #61CE3C;">' '</span><span style="color: #8b0000;">]</span>
+                rec.add_ordered_field<span style="color: #8b0000;">(</span>persfield<span style="color: #8b0000;">)</span>
+    <span style="color: #ff69b4;">vorbes_kor</span> = <span style="color: #8b0000;">[]</span>
+    <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Vorbesitz Institution"</span><span style="color: #8b0000;">]</span> != <span style="color: #61CE3C;">''</span>:
+        vorbes_kor.append<span style="color: #8b0000;">(</span>row<span style="color: #006400;">[</span><span style="color: #61CE3C;">"1. Vorbesitz Institution"</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"2. Vorbesitz Institution"</span><span style="color: #8b0000;">]</span> != <span style="color: #61CE3C;">''</span>:
+        vorbes_kor.append<span style="color: #8b0000;">(</span>row<span style="color: #006400;">[</span><span style="color: #61CE3C;">"2. Vorbesitz Institution"</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">)</span>
+
+    <span style="color: #4c83ff;">if</span> <span style="color: #4c83ff;">len</span><span style="color: #8b0000;">(</span>vorbes_kor<span style="color: #8b0000;">)</span> &gt; <span style="color: #96CBFE;">0</span>:
+        <span style="color: #4c83ff;">for</span> kor <span style="color: #4c83ff;">in</span> vorbes_kor:
+            <span style="color: #4c83ff;">if</span> kor <span style="color: #4c83ff;">not</span> <span style="color: #4c83ff;">in</span> vb_kor:
+                <span style="color: #ff69b4;">korfield</span> = Field<span style="color: #8b0000;">(</span>
+                    tag = <span style="color: #61CE3C;">'710'</span>,
+                    indicators = <span style="color: #006400;">[</span><span style="color: #61CE3C;">'2'</span>, <span style="color: #61CE3C;">' '</span><span style="color: #006400;">]</span>,
+                    subfields = <span style="color: #006400;">[</span><span style="color: #61CE3C;">'a'</span>, kor, <span style="color: #61CE3C;">'4'</span>, <span style="color: #61CE3C;">'fmo'</span><span style="color: #006400;">]</span><span style="color: #8b0000;">)</span>
+                rec.add_ordered_field<span style="color: #8b0000;">(</span>korfield<span style="color: #8b0000;">)</span>
+                <span style="color: #4c83ff;">print</span><span style="color: #8b0000;">(</span>korfield<span style="color: #8b0000;">)</span>
+            <span style="color: #4c83ff;">else</span>:
+                <span style="color: #ff69b4;">korfield</span> = Field<span style="color: #8b0000;">(</span>
+                    tag = <span style="color: #61CE3C;">'710'</span>,
+                    indicators = <span style="color: #006400;">[</span><span style="color: #61CE3C;">'2'</span>, <span style="color: #61CE3C;">' '</span><span style="color: #006400;">]</span>,
+                    subfields = vb_kor<span style="color: #006400;">[</span>kor<span style="color: #006400;">]</span> + <span style="color: #006400;">[</span><span style="color: #61CE3C;">'4'</span>, <span style="color: #61CE3C;">'fmo'</span><span style="color: #006400;">]</span><span style="color: #8b0000;">)</span>
+                rec.add_ordered_field<span style="color: #8b0000;">(</span>korfield<span style="color: #8b0000;">)</span>
+    <span style="color: #ff69b4;">standort</span> = <span style="color: #61CE3C;">"SSHS"</span>
+    <span style="color: #ff69b4;">signatur</span> = <span style="color: #61CE3C;">"Ms "</span> + row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Signatur modern"</span><span style="color: #8b0000;">]</span>
+
+    rec.add_field<span style="color: #8b0000;">(</span>
+        Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">"995"</span>,
+            indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">" "</span>, <span style="color: #61CE3C;">" "</span><span style="color: #ff1493;">]</span>,
+            subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"b"</span>, <span style="color: #61CE3C;">"BHB"</span>, 
+                         <span style="color: #61CE3C;">"c"</span>, standort,
+                         <span style="color: #61CE3C;">"h"</span>, signatur,
+                         <span style="color: #61CE3C;">"a"</span>, row<span style="color: #ffff00;">[</span><span style="color: #61CE3C;">"Signatur alt"</span><span style="color: #ffff00;">]</span>,
+                         <span style="color: #61CE3C;">"9"</span>, <span style="color: #61CE3C;">"LOCAL"</span>
+                         <span style="color: #ff1493;">]</span>
+        <span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+    <span style="color: #4c83ff;">return</span> rec
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orga5c7a72" class="outline-3">
+<h3 id="orga5c7a72"><span class="section-number-3">4.4</span> Zusammensetzen aller Teile</h3>
+<div class="outline-text-3" id="text-4-4">
+<div class="org-src-container">
+<pre class="src src-python" id="org1705c16"><span style="color: #4c83ff;">import</span> csv
+<span style="color: #4c83ff;">from</span> pymarc_helpers <span style="color: #4c83ff;">import</span> *
+<span style="color: #4c83ff;">from</span> pymarc <span style="color: #4c83ff;">import</span> Record, Field
+<span style="color: #4c83ff;">import</span> datetime
+<span style="color: #4c83ff;">import</span> re
+<span style="color: #4c83ff;">from</span> sys <span style="color: #4c83ff;">import</span> argv
+
+<span style="color: #ff69b4;">part1</span> = <span style="color: #61CE3C;">"sourcefiles/0-600.csv"</span>
+<span style="color: #ff69b4;">part2</span> = <span style="color: #61CE3C;">"sourcefiles/601-1200.csv"</span>
+<span style="color: #ff69b4;">part3</span> = <span style="color: #61CE3C;">"sourcefiles/1201-1800.csv"</span>
+<span style="color: #ff69b4;">part4</span> = <span style="color: #61CE3C;">"sourcefiles/1801-Ende.csv"</span>
+
+<span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">output nur schreiben wenn write_out als kommandozeilenargument gegeben wird</span>
+<span style="color: #ff69b4;">write_output</span> = <span style="color: #96CBFE;">False</span>
+<span style="color: #4c83ff;">if</span> <span style="color: #4c83ff;">len</span><span style="color: #8b0000;">(</span>argv<span style="color: #8b0000;">)</span> &gt; <span style="color: #96CBFE;">1</span>:
+    <span style="color: #4c83ff;">if</span> argv<span style="color: #8b0000;">[</span><span style="color: #96CBFE;">1</span><span style="color: #8b0000;">]</span> == <span style="color: #61CE3C;">"write_out"</span>:
+        <span style="color: #ff69b4;">write_output</span> = <span style="color: #96CBFE;">True</span>
+<span style="color: #4c83ff;">def</span> <span style="color: #ff1493;">csv_to_list</span><span style="color: #8b0000;">(</span>filename<span style="color: #8b0000;">)</span>:
+    <span style="color: #FBDE2D;">"""Read a csv file and return a list of dicts (one per line)"""</span>
+
+    <span style="color: #ff69b4;">rows</span> = <span style="color: #8b0000;">[]</span>
+    <span style="color: #4c83ff;">with</span> <span style="color: #4c83ff;">open</span><span style="color: #8b0000;">(</span>filename, newline=<span style="color: #61CE3C;">''</span><span style="color: #8b0000;">)</span> <span style="color: #4c83ff;">as</span> csvfile:
+        <span style="color: #ff69b4;">reader</span> = csv.DictReader<span style="color: #8b0000;">(</span>csvfile, delimiter=<span style="color: #61CE3C;">"\t"</span><span style="color: #8b0000;">)</span>
+        <span style="color: #4c83ff;">for</span> row <span style="color: #4c83ff;">in</span> reader:
+            <span style="color: #4c83ff;">if</span> <span style="color: #61CE3C;">"*"</span> <span style="color: #4c83ff;">in</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Signatur modern"</span><span style="color: #8b0000;">]</span>:
+                <span style="color: #4c83ff;">continue</span>
+            <span style="color: #4c83ff;">else</span>:
+                rows.append<span style="color: #8b0000;">(</span>row<span style="color: #8b0000;">)</span>
+
+    <span style="color: #4c83ff;">return</span> rows
+
+<span style="color: #ff69b4;">vb_pers</span> = <span style="color: #8b0000;">{}</span>
+<span style="color: #4c83ff;">with</span> <span style="color: #4c83ff;">open</span><span style="color: #8b0000;">(</span><span style="color: #61CE3C;">"sourcefiles/Namensansetzung_Kern_Alma.csv"</span><span style="color: #8b0000;">)</span> <span style="color: #4c83ff;">as</span> csvfile:
+    <span style="color: #ff69b4;">reader</span> = csv.reader<span style="color: #8b0000;">(</span>csvfile, delimiter=<span style="color: #61CE3C;">'\t'</span><span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">for</span> row <span style="color: #4c83ff;">in</span> reader:
+        vb_pers<span style="color: #8b0000;">[</span>row<span style="color: #006400;">[</span><span style="color: #96CBFE;">0</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">]</span> = <span style="color: #8b0000;">[</span><span style="color: #61CE3C;">'a'</span>, row<span style="color: #006400;">[</span><span style="color: #96CBFE;">1</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span>, <span style="color: #61CE3C;">'c'</span>, row<span style="color: #006400;">[</span><span style="color: #96CBFE;">2</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span>, <span style="color: #61CE3C;">'0'</span>, row<span style="color: #006400;">[</span><span style="color: #96CBFE;">3</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">]</span>
+<span style="color: #ff69b4;">vb_kor</span> = <span style="color: #8b0000;">{}</span>
+<span style="color: #4c83ff;">with</span> <span style="color: #4c83ff;">open</span><span style="color: #8b0000;">(</span><span style="color: #61CE3C;">"sourcefiles/vb_kor.csv"</span><span style="color: #8b0000;">)</span> <span style="color: #4c83ff;">as</span> csvfile:
+    <span style="color: #ff69b4;">reader</span> = csv.reader<span style="color: #8b0000;">(</span>csvfile, delimiter=<span style="color: #61CE3C;">'\t'</span><span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">for</span> row <span style="color: #4c83ff;">in</span> reader:
+        vb_kor<span style="color: #8b0000;">[</span>row<span style="color: #006400;">[</span><span style="color: #96CBFE;">0</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">]</span> = <span style="color: #8b0000;">[</span><span style="color: #61CE3C;">'a'</span>, row<span style="color: #006400;">[</span><span style="color: #96CBFE;">1</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span>, <span style="color: #61CE3C;">'0'</span>, row<span style="color: #006400;">[</span><span style="color: #96CBFE;">2</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">]</span>
+<span style="color: #4c83ff;">def</span> <span style="color: #ff1493;">get_date</span><span style="color: #8b0000;">(</span>row<span style="color: #8b0000;">)</span>:
+    <span style="color: #FBDE2D;">"""Return the raw date for 264 $$c and 008"""</span>
+    <span style="color: #ff69b4;">data</span> = <span style="color: #96CBFE;">None</span>
+
+    <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Dat. exakt"</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>:
+        <span style="color: #ff69b4;">data</span> = row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Dat. exakt"</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>
+    <span style="color: #4c83ff;">elif</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Dat. Ex. Von - bis"</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>:
+        <span style="color: #ff69b4;">data</span> = row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Dat. Ex. Von - bis"</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>
+    <span style="color: #4c83ff;">elif</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">'1. Dat. ca., um, vor, Anfang, Ende'</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>:
+        <span style="color: #ff69b4;">data</span> = row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">'1. Dat. ca., um, vor, Anfang, Ende'</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>
+    <span style="color: #4c83ff;">elif</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Dat. Jh. "</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>:
+        <span style="color: #ff69b4;">data</span> = row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Dat. Jh. "</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>
+    <span style="color: #4c83ff;">else</span>:
+        <span style="color: #ff69b4;">data</span> = <span style="color: #61CE3C;">"Datum unbekannt"</span>
+
+    <span style="color: #4c83ff;">return</span> data
+<span style="color: #4c83ff;">def</span> <span style="color: #ff1493;">create_record</span><span style="color: #8b0000;">(</span>row<span style="color: #8b0000;">)</span>:
+    <span style="color: #FBDE2D;">"""Take a  row from the csv dict and return a pymarc.Record"""</span>
+    <span style="color: #ff69b4;">rec</span> = Record<span style="color: #8b0000;">()</span>
+    <span style="color: #ff69b4;">rec.leader</span> = <span style="color: #61CE3C;">"00000ntm#a22000005c#4500"</span>
+    rec.add_ordered_field<span style="color: #8b0000;">(</span>
+        pymarc.Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">"005"</span>,
+            data = datetime.datetime.now<span style="color: #ff1493;">()</span>.strftime<span style="color: #ff1493;">(</span><span style="color: #61CE3C;">"%Y%m%d%H%M%S.0"</span><span style="color: #ff1493;">)</span>
+        <span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+    <span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">generiere Inhalt f&#252;r 245</span>
+    <span style="color: #4c83ff;">if</span> <span style="color: #4c83ff;">not</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">'Signatur modern'</span><span style="color: #8b0000;">]</span>:
+        <span style="color: #4c83ff;">return</span> <span style="color: #61CE3C;">"Keine Signatur vorhanden"</span>
+    <span style="color: #4c83ff;">else</span>:
+        <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Bd."</span><span style="color: #8b0000;">]</span>:
+            <span style="color: #ff69b4;">val245</span> = f<span style="color: #61CE3C;">"UBG Ms {row['Signatur modern'].strip()}/{row['Bd.'].strip()}"</span>
+        <span style="color: #4c83ff;">else</span>:
+            <span style="color: #ff69b4;">val245</span> = f<span style="color: #61CE3C;">"UBG Ms {row['Signatur modern'].strip()}"</span>
+
+        rec.add_ordered_field<span style="color: #8b0000;">(</span>
+            Field<span style="color: #006400;">(</span>
+                tag = <span style="color: #61CE3C;">'245'</span>,
+                indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">'0'</span>, <span style="color: #61CE3C;">'0'</span><span style="color: #ff1493;">]</span>,
+                subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">'a'</span>, val245<span style="color: #ff1493;">]</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+    <span style="color: #8B8989; font-style: italic;"># </span><span style="color: #8B8989; font-style: italic;">Umfangsangabe in 300</span>
+    <span style="color: #4c83ff;">if</span> <span style="color: #61CE3C;">"rolle"</span> <span style="color: #4c83ff;">in</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Umfang"</span><span style="color: #8b0000;">]</span>.lower<span style="color: #8b0000;">()</span>:
+        <span style="color: #ff69b4;">sfa</span> = row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Umfang"</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>
+    <span style="color: #4c83ff;">else</span>:
+        <span style="color: #ff69b4;">sfa</span> = f<span style="color: #61CE3C;">'{row["Umfang"].strip()} Bl&#228;tter'</span>
+
+    <span style="color: #ff69b4;">sfc</span> = f<span style="color: #61CE3C;">'{row["Format"].strip()}, {row["Gr&#246;&#223;e h : b   "].strip().replace(":", "x")}'</span>
+
+    <span style="color: #4c83ff;">if</span> sfa.startswith<span style="color: #8b0000;">(</span><span style="color: #61CE3C;">" "</span><span style="color: #8b0000;">)</span>:
+        <span style="color: #ff69b4;">sfa</span> = <span style="color: #61CE3C;">""</span>
+    <span style="color: #4c83ff;">if</span> sfc.startswith<span style="color: #8b0000;">(</span><span style="color: #61CE3C;">", "</span><span style="color: #8b0000;">)</span>:
+        <span style="color: #ff69b4;">sfc</span> = sfc<span style="color: #8b0000;">[</span><span style="color: #96CBFE;">2</span>:<span style="color: #8b0000;">]</span>
+    <span style="color: #4c83ff;">if</span> sfc.endswith<span style="color: #8b0000;">(</span><span style="color: #61CE3C;">", "</span><span style="color: #8b0000;">)</span>:
+        <span style="color: #ff69b4;">sfc</span> = sfc<span style="color: #8b0000;">[</span>:-<span style="color: #96CBFE;">2</span><span style="color: #8b0000;">]</span>
+    rec.add_ordered_field<span style="color: #8b0000;">(</span>
+        Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">'300'</span>,
+            indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">' '</span>, <span style="color: #61CE3C;">' '</span><span style="color: #ff1493;">]</span>,
+            subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"a"</span>, sfa, <span style="color: #61CE3C;">"c"</span>, sfc<span style="color: #ff1493;">]</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Signatur alt"</span><span style="color: #8b0000;">]</span>:
+        rec.add_field<span style="color: #8b0000;">(</span>
+            Field<span style="color: #006400;">(</span>
+                tag = <span style="color: #61CE3C;">'500'</span>,
+                indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">' '</span>, <span style="color: #61CE3C;">' '</span><span style="color: #ff1493;">]</span>,
+                subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">'a'</span>, f<span style="color: #61CE3C;">'Historische Signatur der Universit&#228;tsbibliothek Graz: {row["Signatur alt"].strip()}'</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span>
+        <span style="color: #8b0000;">)</span>
+    rec.add_ordered_field<span style="color: #8b0000;">(</span>
+        Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">"500"</span>,
+            indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">" "</span>, <span style="color: #61CE3C;">" "</span><span style="color: #ff1493;">]</span>,
+            subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"a"</span>, <span style="color: #61CE3C;">"Stand 2018"</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span>
+    <span style="color: #8b0000;">)</span>
+    <span style="color: #ff69b4;">beschreibstoff</span> = row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Beschreibstoff"</span><span style="color: #8b0000;">]</span>.strip<span style="color: #8b0000;">()</span>
+    rec.add_ordered_field<span style="color: #8b0000;">(</span>
+        Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">"340"</span>,
+            indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">" "</span>, <span style="color: #61CE3C;">" "</span><span style="color: #ff1493;">]</span>,
+            subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"a"</span>, beschreibstoff<span style="color: #ff1493;">]</span><span style="color: #006400;">)</span>
+    <span style="color: #8b0000;">)</span>
+    rec.add_ordered_field<span style="color: #8b0000;">(</span>
+        pymarc.Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">"264"</span>,
+            indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">" "</span>, <span style="color: #61CE3C;">"1"</span><span style="color: #ff1493;">]</span>,
+            subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"c"</span>, f<span style="color: #61CE3C;">"[{get_date(row)}]"</span><span style="color: #ff1493;">]</span><span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+    rec.add_field<span style="color: #8b0000;">(</span>
+        Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">"710"</span>,
+            indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"2"</span>, <span style="color: #61CE3C;">" "</span><span style="color: #ff1493;">]</span>,
+            subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"a"</span>, <span style="color: #61CE3C;">"Universita&#776;tsbibliothek Graz"</span>, <span style="color: #61CE3C;">"0"</span>, <span style="color: #61CE3C;">"(DE-588)18018-X"</span>, <span style="color: #61CE3C;">"4"</span>, <span style="color: #61CE3C;">"own"</span><span style="color: #ff1493;">]</span>
+        <span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+    <span style="color: #ff69b4;">date</span> = get_date<span style="color: #8b0000;">(</span>row<span style="color: #8b0000;">)</span>
+
+    <span style="color: #4c83ff;">if</span> date == <span style="color: #61CE3C;">"Datum unbekannt"</span>:
+        <span style="color: #4c83ff;">print</span><span style="color: #8b0000;">(</span><span style="color: #61CE3C;">"Kein Datum vorhanden: "</span> + val245<span style="color: #8b0000;">)</span>
+        <span style="color: #4c83ff;">return</span> f<span style="color: #61CE3C;">"{val245}: Kein Datum vorhanden"</span>
+    <span style="color: #4c83ff;">else</span>:
+        <span style="color: #ff69b4;">year</span> = date_008<span style="color: #8b0000;">(</span>date<span style="color: #8b0000;">)</span>
+        <span style="color: #4c83ff;">if</span> year <span style="color: #4c83ff;">is</span> <span style="color: #96CBFE;">None</span>:
+            <span style="color: #4c83ff;">print</span><span style="color: #8b0000;">(</span><span style="color: #61CE3C;">"Keine Jahreszahl f&#252;r 008 extrahierbar: "</span> + val245<span style="color: #8b0000;">)</span>
+            <span style="color: #4c83ff;">return</span> f<span style="color: #61CE3C;">"{val245}: Keine Jahreszahl f&#252;r 008 extrahierbar."</span>
+
+    <span style="color: #ff69b4;">date_on_file</span> = datetime.datetime.now<span style="color: #8b0000;">()</span>.strftime<span style="color: #8b0000;">(</span><span style="color: #61CE3C;">"%y%m%d"</span><span style="color: #8b0000;">)</span>
+    <span style="color: #ff69b4;">data008</span> = date_on_file + <span style="color: #61CE3C;">"s"</span> + year + <span style="color: #61CE3C;">"    "</span> + <span style="color: #61CE3C;">"xx "</span> + <span style="color: #61CE3C;">"||||"</span>  <span style="color: #61CE3C;">"|"</span> + <span style="color: #61CE3C;">" "</span> + <span style="color: #61CE3C;">"||||"</span> + <span style="color: #61CE3C;">" 00||||   ||"</span>
+    rec.add_ordered_field<span style="color: #8b0000;">(</span>
+        Field<span style="color: #006400;">(</span>tag = <span style="color: #61CE3C;">"008"</span>,
+              data = data008<span style="color: #006400;">)</span>
+    <span style="color: #8b0000;">)</span>
+    <span style="color: #ff69b4;">vorbes_nat_pers</span> = <span style="color: #8b0000;">[]</span>
+    <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. VB nat&#252;rl. Personen"</span><span style="color: #8b0000;">]</span> != <span style="color: #61CE3C;">''</span>:
+        vorbes_nat_pers.append<span style="color: #8b0000;">(</span>row<span style="color: #006400;">[</span><span style="color: #61CE3C;">"1. VB nat&#252;rl. Personen"</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"2. VB nat&#252;rl. Personen"</span><span style="color: #8b0000;">]</span> != <span style="color: #61CE3C;">''</span>:
+        vorbes_nat_pers.append<span style="color: #8b0000;">(</span>row<span style="color: #006400;">[</span><span style="color: #61CE3C;">"2. VB nat&#252;rl. Personen"</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">)</span>
+
+    <span style="color: #4c83ff;">if</span> <span style="color: #4c83ff;">len</span><span style="color: #8b0000;">(</span>vorbes_nat_pers<span style="color: #8b0000;">)</span> &gt; <span style="color: #96CBFE;">0</span>:
+        <span style="color: #4c83ff;">for</span> pers <span style="color: #4c83ff;">in</span> vorbes_nat_pers:
+            <span style="color: #4c83ff;">if</span> pers <span style="color: #4c83ff;">not</span> <span style="color: #4c83ff;">in</span> vb_pers:
+                <span style="color: #4c83ff;">print</span><span style="color: #8b0000;">(</span>f<span style="color: #61CE3C;">"Person nicht vorhanden: {pers}"</span><span style="color: #8b0000;">)</span>
+                <span style="color: #4c83ff;">continue</span>
+            <span style="color: #4c83ff;">else</span>:
+                <span style="color: #ff69b4;">persfield</span> = Field<span style="color: #8b0000;">(</span>
+                    tag = <span style="color: #61CE3C;">'700'</span>,
+                    indicators = <span style="color: #006400;">[</span><span style="color: #61CE3C;">'1'</span>, <span style="color: #61CE3C;">' '</span><span style="color: #006400;">]</span>,
+                    subfields = vb_pers<span style="color: #006400;">[</span>pers<span style="color: #006400;">]</span> + <span style="color: #006400;">[</span><span style="color: #61CE3C;">'4'</span>, <span style="color: #61CE3C;">'fmo'</span><span style="color: #006400;">]</span><span style="color: #8b0000;">)</span>
+                <span style="color: #4c83ff;">if</span> <span style="color: #61CE3C;">","</span> <span style="color: #4c83ff;">not</span> <span style="color: #4c83ff;">in</span> vb_pers<span style="color: #8b0000;">[</span>pers<span style="color: #8b0000;">][</span><span style="color: #96CBFE;">1</span><span style="color: #8b0000;">]</span>:
+                    <span style="color: #ff69b4;">persfield.indicators</span> = <span style="color: #8b0000;">[</span><span style="color: #61CE3C;">'0'</span>, <span style="color: #61CE3C;">' '</span><span style="color: #8b0000;">]</span>
+                rec.add_ordered_field<span style="color: #8b0000;">(</span>persfield<span style="color: #8b0000;">)</span>
+    <span style="color: #ff69b4;">vorbes_kor</span> = <span style="color: #8b0000;">[]</span>
+    <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"1. Vorbesitz Institution"</span><span style="color: #8b0000;">]</span> != <span style="color: #61CE3C;">''</span>:
+        vorbes_kor.append<span style="color: #8b0000;">(</span>row<span style="color: #006400;">[</span><span style="color: #61CE3C;">"1. Vorbesitz Institution"</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">if</span> row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"2. Vorbesitz Institution"</span><span style="color: #8b0000;">]</span> != <span style="color: #61CE3C;">''</span>:
+        vorbes_kor.append<span style="color: #8b0000;">(</span>row<span style="color: #006400;">[</span><span style="color: #61CE3C;">"2. Vorbesitz Institution"</span><span style="color: #006400;">]</span>.strip<span style="color: #006400;">()</span><span style="color: #8b0000;">)</span>
+
+    <span style="color: #4c83ff;">if</span> <span style="color: #4c83ff;">len</span><span style="color: #8b0000;">(</span>vorbes_kor<span style="color: #8b0000;">)</span> &gt; <span style="color: #96CBFE;">0</span>:
+        <span style="color: #4c83ff;">for</span> kor <span style="color: #4c83ff;">in</span> vorbes_kor:
+            <span style="color: #4c83ff;">if</span> kor <span style="color: #4c83ff;">not</span> <span style="color: #4c83ff;">in</span> vb_kor:
+                <span style="color: #ff69b4;">korfield</span> = Field<span style="color: #8b0000;">(</span>
+                    tag = <span style="color: #61CE3C;">'710'</span>,
+                    indicators = <span style="color: #006400;">[</span><span style="color: #61CE3C;">'2'</span>, <span style="color: #61CE3C;">' '</span><span style="color: #006400;">]</span>,
+                    subfields = <span style="color: #006400;">[</span><span style="color: #61CE3C;">'a'</span>, kor, <span style="color: #61CE3C;">'4'</span>, <span style="color: #61CE3C;">'fmo'</span><span style="color: #006400;">]</span><span style="color: #8b0000;">)</span>
+                rec.add_ordered_field<span style="color: #8b0000;">(</span>korfield<span style="color: #8b0000;">)</span>
+                <span style="color: #4c83ff;">print</span><span style="color: #8b0000;">(</span>korfield<span style="color: #8b0000;">)</span>
+            <span style="color: #4c83ff;">else</span>:
+                <span style="color: #ff69b4;">korfield</span> = Field<span style="color: #8b0000;">(</span>
+                    tag = <span style="color: #61CE3C;">'710'</span>,
+                    indicators = <span style="color: #006400;">[</span><span style="color: #61CE3C;">'2'</span>, <span style="color: #61CE3C;">' '</span><span style="color: #006400;">]</span>,
+                    subfields = vb_kor<span style="color: #006400;">[</span>kor<span style="color: #006400;">]</span> + <span style="color: #006400;">[</span><span style="color: #61CE3C;">'4'</span>, <span style="color: #61CE3C;">'fmo'</span><span style="color: #006400;">]</span><span style="color: #8b0000;">)</span>
+                rec.add_ordered_field<span style="color: #8b0000;">(</span>korfield<span style="color: #8b0000;">)</span>
+    <span style="color: #ff69b4;">standort</span> = <span style="color: #61CE3C;">"SSHS"</span>
+    <span style="color: #ff69b4;">signatur</span> = <span style="color: #61CE3C;">"Ms "</span> + row<span style="color: #8b0000;">[</span><span style="color: #61CE3C;">"Signatur modern"</span><span style="color: #8b0000;">]</span>
+
+    rec.add_field<span style="color: #8b0000;">(</span>
+        Field<span style="color: #006400;">(</span>
+            tag = <span style="color: #61CE3C;">"995"</span>,
+            indicators = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">" "</span>, <span style="color: #61CE3C;">" "</span><span style="color: #ff1493;">]</span>,
+            subfields = <span style="color: #ff1493;">[</span><span style="color: #61CE3C;">"b"</span>, <span style="color: #61CE3C;">"BHB"</span>, 
+                         <span style="color: #61CE3C;">"c"</span>, standort,
+                         <span style="color: #61CE3C;">"h"</span>, signatur,
+                         <span style="color: #61CE3C;">"a"</span>, row<span style="color: #ffff00;">[</span><span style="color: #61CE3C;">"Signatur alt"</span><span style="color: #ffff00;">]</span>,
+                         <span style="color: #61CE3C;">"9"</span>, <span style="color: #61CE3C;">"LOCAL"</span>
+                         <span style="color: #ff1493;">]</span>
+        <span style="color: #006400;">)</span><span style="color: #8b0000;">)</span>
+
+    <span style="color: #4c83ff;">return</span> rec
+<span style="color: #ff69b4;">map_dates_008</span> = <span style="color: #8b0000;">{</span>
+    <span style="color: #61CE3C;">"VI"</span>: <span style="color: #61CE3C;">"501"</span>,
+    <span style="color: #61CE3C;">"IX/1"</span>: <span style="color: #61CE3C;">"801"</span>,
+    <span style="color: #61CE3C;">"Mitte IX"</span>: <span style="color: #61CE3C;">"851"</span>,
+    <span style="color: #61CE3C;">"Ende IX"</span>: <span style="color: #61CE3C;">"881"</span>,
+    <span style="color: #61CE3C;">"Anfang X"</span>: <span style="color: #61CE3C;">"901"</span>,
+    <span style="color: #61CE3C;">"Mitte X"</span>: <span style="color: #61CE3C;">"951"</span>,
+    <span style="color: #61CE3C;">"Ende X"</span>: <span style="color: #61CE3C;">"981"</span>,
+    <span style="color: #61CE3C;">"X"</span>: <span style="color: #61CE3C;">"901"</span>,
+    <span style="color: #61CE3C;">"X/1"</span>: <span style="color: #61CE3C;">"901"</span>,
+    <span style="color: #61CE3C;">"X/2"</span>: <span style="color: #61CE3C;">"951"</span>,
+    <span style="color: #61CE3C;">"Anfang XI"</span>: <span style="color: #61CE3C;">"1001"</span>,
+    <span style="color: #61CE3C;">"Mitte XI"</span>: <span style="color: #61CE3C;">"1051"</span>,
+    <span style="color: #61CE3C;">"Ende XI"</span>: <span style="color: #61CE3C;">"1081"</span>,
+    <span style="color: #61CE3C;">"XI"</span>: <span style="color: #61CE3C;">"1051"</span>,
+    <span style="color: #61CE3C;">"XI/1"</span>: <span style="color: #61CE3C;">"1001"</span>,
+    <span style="color: #61CE3C;">"XI/2"</span>: <span style="color: #61CE3C;">"1051"</span>,
+    <span style="color: #61CE3C;">"Anfang XII"</span>: <span style="color: #61CE3C;">"1101"</span>,
+    <span style="color: #61CE3C;">"Mitte XII"</span>: <span style="color: #61CE3C;">"1151"</span>,
+    <span style="color: #61CE3C;">"Ende XII"</span>: <span style="color: #61CE3C;">"1181"</span>,
+    <span style="color: #61CE3C;">"XII"</span>: <span style="color: #61CE3C;">"1151"</span>,
+    <span style="color: #61CE3C;">"XII/1"</span>: <span style="color: #61CE3C;">"1101"</span>,
+    <span style="color: #61CE3C;">"XII/2"</span>: <span style="color: #61CE3C;">"1151"</span>,
+    <span style="color: #61CE3C;">"Anfang XIII"</span>: <span style="color: #61CE3C;">"1201"</span>,
+    <span style="color: #61CE3C;">"Mitte XIII"</span>: <span style="color: #61CE3C;">"1251"</span>,
+    <span style="color: #61CE3C;">"Ende XIII"</span>: <span style="color: #61CE3C;">"1281"</span>,
+    <span style="color: #61CE3C;">"XIII"</span>: <span style="color: #61CE3C;">"1251"</span>,
+    <span style="color: #61CE3C;">"XIII/1"</span>: <span style="color: #61CE3C;">"1201"</span>,
+    <span style="color: #61CE3C;">"XIII/2"</span>: <span style="color: #61CE3C;">"1251"</span>,
+    <span style="color: #61CE3C;">"Anfang XIV"</span>: <span style="color: #61CE3C;">"1301"</span>,
+    <span style="color: #61CE3C;">"Mitte XIV"</span>: <span style="color: #61CE3C;">"1351"</span>,
+    <span style="color: #61CE3C;">"Ende XIV"</span>: <span style="color: #61CE3C;">"1381"</span>,
+    <span style="color: #61CE3C;">"Sp&#228;tes XIV"</span>: <span style="color: #61CE3C;">"1381"</span>,
+    <span style="color: #61CE3C;">"XIV"</span>: <span style="color: #61CE3C;">"1351"</span>,
+    <span style="color: #61CE3C;">"XIV/1"</span>: <span style="color: #61CE3C;">"1301"</span>,
+    <span style="color: #61CE3C;">"XIV/2"</span>: <span style="color: #61CE3C;">"1351"</span>,
+    <span style="color: #61CE3C;">"Anfang XV"</span>: <span style="color: #61CE3C;">"1401"</span>,
+    <span style="color: #61CE3C;">"Erstes Viertel XV"</span>: <span style="color: #61CE3C;">"1401"</span>,
+    <span style="color: #61CE3C;">"Mitte XV"</span>: <span style="color: #61CE3C;">"1451"</span>,
+    <span style="color: #61CE3C;">"Nach Mitte XV"</span>: <span style="color: #61CE3C;">"1451"</span>,
+    <span style="color: #61CE3C;">"Ende XV"</span>: <span style="color: #61CE3C;">"1481"</span>,
+    <span style="color: #61CE3C;">"XV"</span>: <span style="color: #61CE3C;">"1451"</span>,
+    <span style="color: #61CE3C;">"XV/1"</span>: <span style="color: #61CE3C;">"1401"</span>,
+    <span style="color: #61CE3C;">"XV/2"</span>: <span style="color: #61CE3C;">"1451"</span>,
+    <span style="color: #61CE3C;">"Anfang XVI"</span>: <span style="color: #61CE3C;">"1501"</span>,
+    <span style="color: #61CE3C;">"Mitte XVI"</span>: <span style="color: #61CE3C;">"1551"</span>,
+    <span style="color: #61CE3C;">"Ende XVI"</span>: <span style="color: #61CE3C;">"1581"</span>,
+    <span style="color: #61CE3C;">"XVI"</span>: <span style="color: #61CE3C;">"1551"</span>,
+    <span style="color: #61CE3C;">"XVI/1"</span>: <span style="color: #61CE3C;">"1501"</span>,
+    <span style="color: #61CE3C;">"XVI/2"</span>: <span style="color: #61CE3C;">"1551"</span>,
+    <span style="color: #61CE3C;">"Anfang XVII"</span>: <span style="color: #61CE3C;">"1601"</span>,
+    <span style="color: #61CE3C;">"Mitte XVII"</span>: <span style="color: #61CE3C;">"1651"</span>,
+    <span style="color: #61CE3C;">"Ende XVII"</span>: <span style="color: #61CE3C;">"1681"</span>,
+    <span style="color: #61CE3C;">"XVII"</span>: <span style="color: #61CE3C;">"1651"</span>,
+    <span style="color: #61CE3C;">"XVII/1"</span>: <span style="color: #61CE3C;">"1601"</span>,
+    <span style="color: #61CE3C;">"XVII/2"</span>: <span style="color: #61CE3C;">"1651"</span>,
+    <span style="color: #61CE3C;">"Anfang XVIII"</span>: <span style="color: #61CE3C;">"1701"</span>,
+    <span style="color: #61CE3C;">"Vor Mitte XVIII"</span>: <span style="color: #61CE3C;">"1701"</span>,
+    <span style="color: #61CE3C;">"Mitte XVIII"</span>: <span style="color: #61CE3C;">"1751"</span>,
+    <span style="color: #61CE3C;">"Ende XVIII"</span>: <span style="color: #61CE3C;">"1781"</span>,
+    <span style="color: #61CE3C;">"XVIII"</span>: <span style="color: #61CE3C;">"1751"</span>,
+    <span style="color: #61CE3C;">"XVIII/1"</span>: <span style="color: #61CE3C;">"1701"</span>,
+    <span style="color: #61CE3C;">"XVIII/2"</span>: <span style="color: #61CE3C;">"1751"</span>,
+    <span style="color: #61CE3C;">"Mitte XIX"</span>: <span style="color: #61CE3C;">"1851"</span>,
+    <span style="color: #61CE3C;">"XIX"</span>: <span style="color: #61CE3C;">"1801"</span>,
+    <span style="color: #61CE3C;">"XIX/1"</span>: <span style="color: #61CE3C;">"1801"</span>,
+    <span style="color: #61CE3C;">"XIX/2"</span>: <span style="color: #61CE3C;">"1851"</span>,
+<span style="color: #8b0000;">}</span>
+<span style="color: #4c83ff;">def</span> <span style="color: #ff1493;">date_008</span><span style="color: #8b0000;">(</span>date<span style="color: #8b0000;">)</span>:
+    <span style="color: #ff69b4;">year</span> = <span style="color: #96CBFE;">None</span>
+    <span style="color: #4c83ff;">if</span> date <span style="color: #4c83ff;">in</span> map_dates_008.keys<span style="color: #8b0000;">()</span>:
+        <span style="color: #ff69b4;">year</span> = map_dates_008<span style="color: #8b0000;">[</span>date<span style="color: #8b0000;">]</span>.zfill<span style="color: #8b0000;">(</span><span style="color: #96CBFE;">4</span><span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">else</span>:
+        <span style="color: #ff69b4;">re_match</span> = re.search<span style="color: #8b0000;">(</span>r<span style="color: #61CE3C;">'\d{3}\d?'</span>, date<span style="color: #8b0000;">)</span>
+        <span style="color: #4c83ff;">if</span> re_match <span style="color: #4c83ff;">is</span> <span style="color: #4c83ff;">not</span> <span style="color: #96CBFE;">None</span>:
+            <span style="color: #ff69b4;">year</span> = re_match.group<span style="color: #8b0000;">(</span><span style="color: #96CBFE;">0</span><span style="color: #8b0000;">)</span>.strip<span style="color: #8b0000;">()</span>.zfill<span style="color: #8b0000;">(</span><span style="color: #96CBFE;">4</span><span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">return</span> year
+
+
+<span style="color: #ff69b4;">d1</span> = csv_to_list<span style="color: #8b0000;">(</span>part1<span style="color: #8b0000;">)</span>
+<span style="color: #ff69b4;">d2</span> = csv_to_list<span style="color: #8b0000;">(</span>part2<span style="color: #8b0000;">)</span>
+<span style="color: #ff69b4;">d3</span> = csv_to_list<span style="color: #8b0000;">(</span>part3<span style="color: #8b0000;">)</span>
+<span style="color: #ff69b4;">d4</span> = csv_to_list<span style="color: #8b0000;">(</span>part4<span style="color: #8b0000;">)</span>
+<span style="color: #ff69b4;">r</span> = d1<span style="color: #8b0000;">[</span><span style="color: #96CBFE;">0</span><span style="color: #8b0000;">]</span>
+
+<span style="color: #ff69b4;">rows</span> = <span style="color: #8b0000;">[]</span>
+<span style="color: #ff69b4;">errors</span> = <span style="color: #8b0000;">[]</span>
+<span style="color: #ff69b4;">outlist</span> = <span style="color: #8b0000;">[]</span>
+
+<span style="color: #4c83ff;">for</span> d <span style="color: #4c83ff;">in</span> <span style="color: #8b0000;">(</span>d1, d2, d3, d4<span style="color: #8b0000;">)</span>:
+    <span style="color: #4c83ff;">for</span> row <span style="color: #4c83ff;">in</span> d:
+        rows.append<span style="color: #8b0000;">(</span>row<span style="color: #8b0000;">)</span>
+
+<span style="color: #4c83ff;">for</span> row <span style="color: #4c83ff;">in</span> rows:
+    <span style="color: #ff69b4;">rec</span> = create_record<span style="color: #8b0000;">(</span>row<span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">if</span> <span style="color: #4c83ff;">type</span><span style="color: #8b0000;">(</span>rec<span style="color: #8b0000;">)</span> <span style="color: #4c83ff;">is</span> pymarc.record.Record:
+        outlist.append<span style="color: #8b0000;">(</span>rec<span style="color: #8b0000;">)</span>
+    <span style="color: #4c83ff;">else</span>:
+        errors.append<span style="color: #8b0000;">(</span>rec<span style="color: #8b0000;">)</span>
+
+<span style="color: #4c83ff;">if</span> write_output:
+    write_to_file<span style="color: #8b0000;">(</span>outlist, <span style="color: #61CE3C;">"output/handschriften"</span>, <span style="color: #61CE3C;">"xml"</span><span style="color: #8b0000;">)</span>
+
+    <span style="color: #4c83ff;">with</span> <span style="color: #4c83ff;">open</span><span style="color: #8b0000;">(</span><span style="color: #61CE3C;">"output/errors.txt"</span>, <span style="color: #61CE3C;">"w"</span><span style="color: #8b0000;">)</span> <span style="color: #4c83ff;">as</span> fh:
+        <span style="color: #4c83ff;">for</span> error <span style="color: #4c83ff;">in</span> errors:
+            fh.write<span style="color: #8b0000;">(</span>error + <span style="color: #61CE3C;">"\n"</span><span style="color: #8b0000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Stefan Schuh</p>
+<p class="date">Created: 2019-09-17 Di 17:01</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
